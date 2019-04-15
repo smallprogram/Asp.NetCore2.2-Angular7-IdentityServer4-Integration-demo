@@ -3,11 +3,16 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.28803.156
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmallProgramDemo.Api", "SmallProgramDemo.Api\SmallProgramDemo.Api.csproj", "{3B957A1C-4958-41D1-B6AA-F41B71869AC3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SmallProgramDemo.Api", "SmallProgramDemo.Api\SmallProgramDemo.Api.csproj", "{3B957A1C-4958-41D1-B6AA-F41B71869AC3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmallProgramDemo.Core", "SmallProgramDemo.Core\SmallProgramDemo.Core.csproj", "{3AE673C5-F1AB-4841-9884-B2C637EE2F2F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SmallProgramDemo.Core", "SmallProgramDemo.Core\SmallProgramDemo.Core.csproj", "{3AE673C5-F1AB-4841-9884-B2C637EE2F2F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmallProgramDemo.Infrastructure", "SmallProgramDemo.Infrastructure\SmallProgramDemo.Infrastructure.csproj", "{122F264E-3FC2-491C-9867-9529F5146432}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SmallProgramDemo.Infrastructure", "SmallProgramDemo.Infrastructure\SmallProgramDemo.Infrastructure.csproj", "{122F264E-3FC2-491C-9867-9529F5146432}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{9E7750F7-67C7-4487-A5BA-B55306B4DC65}"
+	ProjectSection(SolutionItems) = preProject
+		README.md = README.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
