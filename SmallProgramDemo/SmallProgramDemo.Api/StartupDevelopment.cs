@@ -7,7 +7,9 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using SmallProgramDemo.Core.Interface;
 using SmallProgramDemo.Infrastructure.Database;
+using SmallProgramDemo.Infrastructure.Repository;
 
 namespace SmallProgramDemo.Api
 {
@@ -29,6 +31,11 @@ namespace SmallProgramDemo.Api
                 options.RedirectStatusCode = StatusCodes.Status307TemporaryRedirect;
                 options.HttpsPort = 5001;
             });
+
+            //注册Respository
+            services.AddScoped<IPostRepository, PostRepository>();
+            //注册UnitOfWork
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
 
         }
 

@@ -69,5 +69,25 @@ https://docs.microsoft.com/zh-cn/ef/core/miscellaneous/cli/powershell
 ### 创建DbSeed，初始化数据库数据
 参考Api项目中Program类的调用，参考Infrastructure项目中Database\MyContextSeed.cs
 
-### 使用
+### 使用Unit Of Work + Repository模式
+1. 使用Repository模式将数据库Context与控制器松耦合配置，方便未来在换数据库提供商，让持久化技术动态化
+2. 使用Repository模式易于测试
+3. 使用Repository模式易于代码复用
+4. 使用接口IRepository，通过依赖注入实现松耦合，并且遵循DIP原则(所谓DIP原则就是SOLID里的D原则，要求高级别模块不应该依赖于低级别模块，他们都应该依赖于抽象)
+5. 使用接口IRepository，方便单元测试
+
+### 为什么要使用Unit Of Work
+1. DbContext已经实现了Unit Of Work和Repository模式。
+2. Controller等 不应该直接使用DbContext
+
+### 在使用Unit Of Work + Repository模式时
+ `postRepository.AddPost(post);`<br>
+`await unitOfWork.SaveAsync();`<br>
+他们使用的DbContext为同一个DbContext，EFCore已经帮助我们控制了他们使用的DbContext的生命周期。
+
+
+### Asp.net Core服务注册生命周期
+1. Transient:每次其他类请求(不是指Http Request)都会创建一个新的实例，比较适合轻量级的无状态的service.
+2. Scope:每次HTTP请求都会创建一个实例
+3. Singleton：在第一次请求创建一个实例，以后也只是返回第一次创建的实例；或者在ConfigureService代码运行时创建一个唯一的实例
 
