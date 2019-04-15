@@ -23,7 +23,7 @@ namespace SmallProgramDemo.Api
 
             services.AddDbContext<MyContext>(options =>
             {
-                options.UseSqlServer("data source=192.159.93.130;initial catalog=SmallProgramDemoDB;persist security info=True;user id=sa;password=sa;MultipleActiveResultSets=True;");
+                options.UseSqlServer("data source=127.0.0.1;initial catalog=SmallProgramDemoDB;persist security info=True;user id=sa;password=sa;MultipleActiveResultSets=True;");
             });
 
             //https重定向
