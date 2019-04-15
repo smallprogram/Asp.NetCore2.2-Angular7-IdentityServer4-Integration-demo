@@ -46,12 +46,28 @@ Configure方法使用该中间件<br>
 
 ### 集成Entity Framework Core
 1. 安装EF包
-* Microsoft.EntityFrameworkCore
+* Microsoft.EntityFrameworkCore.Design for Infrastructure
+* Microsoft.EntityFrameworkCore.SqlServer for Core
 2. 建立Context
 * 建立Entities
 * 建立Context，继承自DbContext
 3. 在Startup类中注册Context
 `service.AddDbContext<xxxContext>(...)`
+### EFCore配置
+1. 将Entities放在Core项目中
+2. Context放在Infrastructure项目中
+3. 在Api项目中进行注册配置
+### 添加EFCore数据库迁移
+参考文档：<br>
+https://docs.microsoft.com/zh-cn/ef/core/miscellaneous/cli/powershell
+1. 使用Package Manager Console输入命令
+2. Add-Migration [Name] 添加迁移
+3. Update-Database [-Verbose]执行数据迁移更新到数据库,-Verbose参数指定时将显示执行明细。
+4. 如果要删除迁移，请执行Remove-Migration [Name]删除迁移内容，之后执行Update-Database将删除的迁移操作更新到数据库<br>
+<b>也可以使用dotnet cli执行命令</b>
 
+### 创建DbSeed，初始化数据库数据
+参考Api项目中Program类的调用，参考Infrastructure项目中Database\MyContextSeed.cs
 
+### 使用
 

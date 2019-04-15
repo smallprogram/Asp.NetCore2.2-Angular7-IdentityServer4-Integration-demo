@@ -5,7 +5,9 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using SmallProgramDemo.Infrastructure.Database;
 
 namespace SmallProgramDemo.Api
 {
@@ -16,6 +18,12 @@ namespace SmallProgramDemo.Api
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
+
+            services.AddDbContext<MyContext>(options =>
+            {
+                options.UseSqlServer("data source=192.159.93.130;initial catalog=SmallProgramDemoDB;persist security info=True;user id=sa;password=sa;MultipleActiveResultSets=True;");
+            });
+
             //https重定向
             services.AddHttpsRedirection(options => {
                 options.RedirectStatusCode = StatusCodes.Status307TemporaryRedirect;
