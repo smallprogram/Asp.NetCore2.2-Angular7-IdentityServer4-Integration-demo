@@ -6,3 +6,4 @@
 /.vs
 /SmallProgramDemo/.vs/SmallProgramDemo/v16
 /SmallProgramDemo/SmallProgram.Core/obj
+/SmallProgramDemo/SmallProgram.Infrastructure/obj
