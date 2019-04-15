@@ -85,9 +85,17 @@ https://docs.microsoft.com/zh-cn/ef/core/miscellaneous/cli/powershell
 `await unitOfWork.SaveAsync();`<br>
 他们使用的DbContext为同一个DbContext，EFCore已经帮助我们控制了他们使用的DbContext的生命周期。
 
+### 为什么不把保存数据操作从Unit Of Work中移到Repository中
+1. Repository属于一种仓储或者集合，而仓库从某种意义上讲不应该存在保存功能
+2. 一个项目可能包含多个不同的Repository，每个不同的Repository可能含有不同的DbContext,如果将保存操作放到Repository中，很有可能会导致保存操作混乱
+
 
 ### Asp.net Core服务注册生命周期
 1. Transient:每次其他类请求(不是指Http Request)都会创建一个新的实例，比较适合轻量级的无状态的service.
 2. Scope:每次HTTP请求都会创建一个实例
 3. Singleton：在第一次请求创建一个实例，以后也只是返回第一次创建的实例；或者在ConfigureService代码运行时创建一个唯一的实例
 
+### Entity的约束
+1. 使用类继承自`IEntityTypeConfiguration<TEntity>`，通过FluentAPI对实体进行约束
+2. 使用DbContext里的OnModelCreating()方法调用配置好的实体约束类<br>
+了解更多请参考：EFCore创建模型文档 https://docs.microsoft.com/zh-cn/ef/core/modeling/
