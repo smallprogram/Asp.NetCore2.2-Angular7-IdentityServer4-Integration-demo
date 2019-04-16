@@ -33,7 +33,8 @@ namespace SmallProgramDemo.Api.Controllers
         public async Task<IActionResult> Get()
         {
             var posts = await postRepository.GetAllPosts();
-            logger.LogError("测试的错误日志记录");
+            //logger.LogError("测试的错误日志记录");
+            //throw new Exception("发生了错误");
             return Ok(posts);
         }
 
