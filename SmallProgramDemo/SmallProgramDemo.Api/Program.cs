@@ -9,6 +9,8 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Serilog;
+using Serilog.Events;
 using SmallProgramDemo.Infrastructure.Database;
 
 namespace SmallProgramDemo.Api
@@ -17,6 +19,16 @@ namespace SmallProgramDemo.Api
     {
         public static void Main(string[] args)
         {
+            //serilog配置
+            Log.Logger = new LoggerConfiguration()
+            .MinimumLevel.Debug()  //最小日志输入级别
+            .MinimumLevel.Override("Microsoft", LogEventLevel.Information) //覆盖带有Microsoft的日志级别为Information
+            .Enrich.FromLogContext()
+            .WriteTo.Console()
+            //.WriteTo.File(Path.Combine("logs", @"log.txt"), rollingInterval: RollingInterval.Day) //记录到文件，每天记录
+            .CreateLogger();
+
+
             var host = CreateWebHostBuilder(args).Build();
 
             #region 执行数据库初始化Seed
@@ -46,6 +58,7 @@ namespace SmallProgramDemo.Api
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
                 //.UseStartup<StartupProduction>();
-                .UseStartup(typeof(StartupDevelopment).GetTypeInfo().Assembly.FullName);
+                .UseStartup(typeof(StartupDevelopment).GetTypeInfo().Assembly.FullName)
+                .UseSerilog();  //使用Serilog
     }
 }

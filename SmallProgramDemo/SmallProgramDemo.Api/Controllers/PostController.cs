@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using SmallProgramDemo.Core.Entities;
 using SmallProgramDemo.Core.Interface;
 using SmallProgramDemo.Infrastructure.Database;
@@ -15,11 +16,16 @@ namespace SmallProgramDemo.Api.Controllers
     {
         private readonly IPostRepository postRepository;
         private readonly IUnitOfWork unitOfWork;
+        private readonly ILogger<PostController> logger;
 
-        public PostController(IPostRepository postRepository,IUnitOfWork unitOfWork)
+        public PostController(
+            IPostRepository postRepository,
+            IUnitOfWork unitOfWork, 
+            ILogger<PostController> logger)
         {
             this.postRepository = postRepository;
             this.unitOfWork = unitOfWork;
+            this.logger = logger;
         }
 
 
@@ -27,6 +33,7 @@ namespace SmallProgramDemo.Api.Controllers
         public async Task<IActionResult> Get()
         {
             var posts = await postRepository.GetAllPosts();
+            logger.LogError("测试的错误日志记录");
             return Ok(posts);
         }
 
