@@ -2,12 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using SmallProgramDemo.Core.Entities;
 using SmallProgramDemo.Core.Interface;
 using SmallProgramDemo.Infrastructure.Database;
+using SmallProgramDemo.Infrastructure.Resources;
 
 namespace SmallProgramDemo.Api.Controllers
 {
@@ -17,15 +19,18 @@ namespace SmallProgramDemo.Api.Controllers
         private readonly IPostRepository postRepository;
         private readonly IUnitOfWork unitOfWork;
         private readonly ILogger<PostController> logger;
+        private readonly IMapper mapper;
 
         public PostController(
             IPostRepository postRepository,
             IUnitOfWork unitOfWork, 
-            ILogger<PostController> logger)
+            ILogger<PostController> logger,
+            IMapper mapper)
         {
             this.postRepository = postRepository;
             this.unitOfWork = unitOfWork;
             this.logger = logger;
+            this.mapper = mapper;
         }
 
 
@@ -33,9 +38,12 @@ namespace SmallProgramDemo.Api.Controllers
         public async Task<IActionResult> Get()
         {
             var posts = await postRepository.GetAllPosts();
+            //将posts集合映射为PostResource集合
+            var postResource = mapper.Map<IEnumerable<Post>, IEnumerable<PostResource>>(posts);
+
             //logger.LogError("测试的错误日志记录");
             //throw new Exception("发生了错误");
-            return Ok(posts);
+            return Ok(postResource);
         }
 
         [HttpPost]

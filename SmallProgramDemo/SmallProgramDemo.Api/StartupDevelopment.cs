@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using AutoMapper;
+using FluentValidation;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
@@ -9,6 +11,7 @@ using SmallProgramDemo.Api.Extensions;
 using SmallProgramDemo.Core.Interface;
 using SmallProgramDemo.Infrastructure.Database;
 using SmallProgramDemo.Infrastructure.Repository;
+using SmallProgramDemo.Infrastructure.Resources;
 
 namespace SmallProgramDemo.Api
 {
@@ -56,6 +59,12 @@ namespace SmallProgramDemo.Api
             services.AddScoped<IPostRepository, PostRepository>();
             //注册UnitOfWork
             services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+            //注册映射服务
+            services.AddAutoMapper();
+
+            //注册FluentValidat验证器
+            services.AddTransient<IValidator<PostResource>, PostResourceValidator>();
 
         }
 
