@@ -9,5 +9,6 @@ namespace SmallProgramDemo.Core.Interface
         Task<IEnumerable<Post>> GetAllPosts();
 
         void AddPost(Post post);
+        Task<Post> GetPostById(int id);
     }
 }

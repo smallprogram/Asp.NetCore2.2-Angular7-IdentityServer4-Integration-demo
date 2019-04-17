@@ -45,6 +45,21 @@ namespace SmallProgramDemo.Api.Controllers
             //throw new Exception("发生了错误");
             return Ok(postResource);
         }
+        [HttpGet("{id}")]
+        public async Task<IActionResult> Get(int id)
+        {
+            var post = await postRepository.GetPostById(id);
+
+            //处理没找到的情况返回404
+            if (post == null)
+            {
+                return NotFound();
+            }
+
+            var postResource = mapper.Map<Post, PostResource>(post);
+
+            return Ok(postResource);
+        }
 
         [HttpPost]
         public async Task<IActionResult> Post()

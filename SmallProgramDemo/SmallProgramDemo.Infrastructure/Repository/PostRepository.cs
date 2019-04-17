@@ -27,5 +27,10 @@ namespace SmallProgramDemo.Infrastructure.Repository
         {
             return await myContext.Posts.ToListAsync();
         }
+
+        public async Task<Post> GetPostById(int id)
+        {
+            return await myContext.Posts.FindAsync(id);
+        }
     }
 }
