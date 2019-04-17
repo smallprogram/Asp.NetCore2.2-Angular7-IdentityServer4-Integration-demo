@@ -3,6 +3,7 @@ using FluentValidation;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -23,11 +24,20 @@ namespace SmallProgramDemo.Api
         {
             this.configuration = configuration;
         }
+
         // This method gets called by the runtime. Use this method to add services to the container.
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc();
+            services.AddMvc(options =>
+            {
+                //配置内容协商不成功时返回406
+                options.ReturnHttpNotAcceptable = true;
+                //配置内容协商使服务器返回资源支持xml格式
+                options.OutputFormatters.Add(new XmlDataContractSerializerOutputFormatter());
+
+                //options.InputFormatters.Add(new XmlDataContractSerializerInputFormatter());
+            });
 
             //获取当前机器名称
             var MachineName = System.Environment.MachineName;
