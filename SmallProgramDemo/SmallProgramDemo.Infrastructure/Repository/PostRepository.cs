@@ -3,6 +3,7 @@ using SmallProgramDemo.Core.Entities;
 using SmallProgramDemo.Core.Interface;
 using SmallProgramDemo.Infrastructure.Database;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace SmallProgramDemo.Infrastructure.Repository
@@ -23,9 +24,20 @@ namespace SmallProgramDemo.Infrastructure.Repository
             myContext.Posts.Add(post);
         }
 
-        public async Task<IEnumerable<Post>> GetAllPosts()
+        public async Task<PaginatedList<Post>> GetAllPosts(PostQueryParameters postQueryParameters)
         {
-            return await myContext.Posts.ToListAsync();
+            var query = myContext.Posts.OrderBy(x => x.id);
+            var count = await query.CountAsync();
+
+
+            var data =  await query
+                .Skip(postQueryParameters.PageIndex * postQueryParameters.PageSize)
+                .Take(postQueryParameters.PageSize)
+                .ToListAsync();
+
+            return new PaginatedList<Post>(postQueryParameters.PageIndex, postQueryParameters.PageSize, count, data);
+                
+            //return await myContext.Posts.ToListAsync();
         }
 
         public async Task<Post> GetPostById(int id)

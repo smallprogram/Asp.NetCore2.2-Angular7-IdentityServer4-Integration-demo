@@ -6,7 +6,7 @@ namespace SmallProgramDemo.Core.Interface
 {
     public interface IPostRepository
     {
-        Task<IEnumerable<Post>> GetAllPosts();
+        Task<PaginatedList<Post>> GetAllPosts(PostQueryParameters postQueryParameters);
 
         void AddPost(Post post);
         Task<Post> GetPostById(int id);
