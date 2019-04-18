@@ -2,6 +2,10 @@
 
 namespace SmallProgramDemo.Core.Entities
 {
+    /// <summary>
+    /// API响应的传出数据与分页元数据封装类
+    /// </summary>
+    /// <typeparam name="T">数据类型</typeparam>
     public class PaginatedList<T> :List<T> where T: class
     {
         //页面数据量

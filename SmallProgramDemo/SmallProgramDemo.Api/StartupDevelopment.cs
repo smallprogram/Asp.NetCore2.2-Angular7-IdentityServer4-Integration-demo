@@ -16,6 +16,7 @@ using SmallProgramDemo.Core.Interface;
 using SmallProgramDemo.Infrastructure.Database;
 using SmallProgramDemo.Infrastructure.Repository;
 using SmallProgramDemo.Infrastructure.Resources;
+using SmallProgramDemo.Infrastructure.Services;
 
 namespace SmallProgramDemo.Api
 {
@@ -87,6 +88,10 @@ namespace SmallProgramDemo.Api
                 return new UrlHelper(actionContext);
             });
 
+            //注册配置Resource到Entity的映射，用于排序使用
+            var propertyMappingContainer = new PropertyMappingContainer();
+            propertyMappingContainer.Register<PostPropertyMapping>();
+            services.AddSingleton<IPropertyMappingContainer>(propertyMappingContainer);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

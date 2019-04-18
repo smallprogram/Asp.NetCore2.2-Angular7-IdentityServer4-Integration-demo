@@ -13,6 +13,7 @@
     <PackageReference Include="FluentValidation" Version="8.2.3" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="2.2.4" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.2.4" />
+    <PackageReference Include="System.Linq.Dynamic.Core" Version="1.0.12" />
   </ItemGroup>
 
   <ItemGroup>

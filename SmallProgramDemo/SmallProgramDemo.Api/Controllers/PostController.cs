@@ -6,6 +6,7 @@ using Newtonsoft.Json.Serialization;
 using SmallProgramDemo.Core.Entities;
 using SmallProgramDemo.Core.Interface;
 using SmallProgramDemo.Infrastructure.Resources;
+using SmallProgramDemo.Infrastructure.Services;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -20,19 +21,22 @@ namespace SmallProgramDemo.Api.Controllers
         private readonly ILogger<PostController> logger;
         private readonly IMapper mapper;
         private readonly IUrlHelper urlHelper;
+        private readonly IPropertyMappingContainer propertyMappingContainer;
 
         public PostController(
             IPostRepository postRepository,
             IUnitOfWork unitOfWork,
             ILogger<PostController> logger,
             IMapper mapper,
-            IUrlHelper urlHelper)
+            IUrlHelper urlHelper,
+            IPropertyMappingContainer propertyMappingContainer)
         {
             this.postRepository = postRepository;
             this.unitOfWork = unitOfWork;
             this.logger = logger;
             this.mapper = mapper;
             this.urlHelper = urlHelper;
+            this.propertyMappingContainer = propertyMappingContainer;
         }
 
 

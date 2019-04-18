@@ -4,6 +4,9 @@ using System.Text;
 
 namespace SmallProgramDemo.Core.Entities
 {
+    /// <summary>
+    /// 数据资源的元数据中的分页元数据枚举类
+    /// </summary>
     public enum PaginationResourceUriType
     {
         /// <summary>
