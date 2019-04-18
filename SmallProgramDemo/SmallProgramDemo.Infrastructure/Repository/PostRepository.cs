@@ -36,7 +36,7 @@ namespace SmallProgramDemo.Infrastructure.Repository
             var query = myContext.Posts.AsQueryable();
 
             #region 根据需求 过滤相关字段
-            if (!string.IsNullOrEmpty(postQueryParameters.Title.Trim()))
+            if (!string.IsNullOrEmpty(postQueryParameters.Title))
             {
                 var title = postQueryParameters.Title.Trim().ToLowerInvariant();
                 //直接检索
@@ -53,7 +53,7 @@ namespace SmallProgramDemo.Infrastructure.Repository
 
             //query = query.OrderBy(x => x.id);
 
-
+            //传入参数，实现属性排序，传入需要排序ResourceModel的属性
             query = query.ApplySort(postQueryParameters.OrderBy, propertyMappingContainer.Resolve<PostResource, Post>());
 
 

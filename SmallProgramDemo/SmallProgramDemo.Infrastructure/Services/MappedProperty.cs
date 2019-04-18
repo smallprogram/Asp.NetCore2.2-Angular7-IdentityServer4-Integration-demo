@@ -5,13 +5,18 @@ using System.Text;
 namespace SmallProgramDemo.Infrastructure.Services
 {
     /// <summary>
-    /// Resource Model与EntityModel的属性映射对的容器
+    /// EntityModel的属性映射的容器，用于排序时使用对应的EntityModel的属性映射名称与是否为相反顺序的排序映射
     /// </summary>
     public class MappedProperty
     {
-        //映射的属性名
+
+        /// <summary>
+        /// 映射的属性名
+        /// </summary>
         public string Name { get; set; }
-        //是否为反向映射
+        /// <summary>
+        /// 是否为相反顺序的排序映射
+        /// </summary>
         public bool Revert { get; set; }
     }
 }

@@ -97,9 +97,9 @@ namespace SmallProgramDemo.Api
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
-            //app.UseDeveloperExceptionPage();
+            app.UseDeveloperExceptionPage();
             //使用自定义的错误处理器管道
-            app.UseMyExceptionHandler(loggerFactory);
+            //app.UseMyExceptionHandler(loggerFactory);
 
             //https重定向
             app.UseHttpsRedirection();

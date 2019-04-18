@@ -231,7 +231,7 @@ namespace SmallProgramDemo.Infrastructure.Database
                     myContext.Posts.Add(new Post
                     {
                         Title = "Post Title 2",
-                        Body = "Post Body 2",
+                        Body = "Post Body 44",
                         Author = "zhusir",
                         LastModified = DateTime.Now
                     });await myContext.SaveChangesAsync();
@@ -245,7 +245,7 @@ namespace SmallProgramDemo.Infrastructure.Database
                     myContext.Posts.Add(new Post
                     {
                         Title = "Post Title 4",
-                        Body = "Post Body 4",
+                        Body = "Post Body 233",
                         Author = "zhusir",
                         LastModified = DateTime.Now
                     });await myContext.SaveChangesAsync();
@@ -259,7 +259,7 @@ namespace SmallProgramDemo.Infrastructure.Database
                     myContext.Posts.Add(new Post
                     {
                         Title = "Post Title 6",
-                        Body = "Post Body 6",
+                        Body = "Post Body 70",
                         Author = "zhusir",
                         LastModified = DateTime.Now
                     });await myContext.SaveChangesAsync();
@@ -287,7 +287,7 @@ namespace SmallProgramDemo.Infrastructure.Database
                     myContext.Posts.Add(new Post
                     {
                         Title = "Post Title 10",
-                        Body = "Post Body 10",
+                        Body = "Post Body 50",
                         Author = "zhusir",
                         LastModified = DateTime.Now
                     });await myContext.SaveChangesAsync();
@@ -315,7 +315,7 @@ namespace SmallProgramDemo.Infrastructure.Database
                     myContext.Posts.Add(new Post
                     {
                         Title = "Post Title 14",
-                        Body = "Post Body 14",
+                        Body = "Post Body 44",
                         Author = "zhusir",
                         LastModified = DateTime.Now
                     });await myContext.SaveChangesAsync();
@@ -328,7 +328,7 @@ namespace SmallProgramDemo.Infrastructure.Database
                     });await myContext.SaveChangesAsync();
                     myContext.Posts.Add(new Post
                     {
-                        Title = "Post Title 16",
+                        Title = "Post Title 80",
                         Body = "Post Body 16",
                         Author = "zhusir",
                         LastModified = DateTime.Now
@@ -349,7 +349,7 @@ namespace SmallProgramDemo.Infrastructure.Database
                     });await myContext.SaveChangesAsync();
                     myContext.Posts.Add(new Post
                     {
-                        Title = "Post Title 19",
+                        Title = "Post Title 88",
                         Body = "Post Body 19",
                         Author = "zhusir",
                         LastModified = DateTime.Now
