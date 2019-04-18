@@ -3,7 +3,10 @@ using FluentValidation;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Formatters;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
+using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -75,6 +78,14 @@ namespace SmallProgramDemo.Api
 
             //注册FluentValidat验证器
             services.AddTransient<IValidator<PostResource>, PostResourceValidator>();
+
+            //注册配置URI Helper
+            services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();  //单例的ActionContextAccessor依赖注入
+            services.AddScoped<IUrlHelper>(factory =>
+            {
+                var actionContext = factory.GetService<IActionContextAccessor>().ActionContext;
+                return new UrlHelper(actionContext);
+            });
 
         }
 
