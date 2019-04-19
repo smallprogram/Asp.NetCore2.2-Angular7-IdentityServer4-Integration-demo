@@ -11,6 +11,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json.Serialization;
 using SmallProgramDemo.Api.Extensions;
 using SmallProgramDemo.Core.Interface;
 using SmallProgramDemo.Infrastructure.Database;
@@ -41,6 +42,11 @@ namespace SmallProgramDemo.Api
                 options.OutputFormatters.Add(new XmlDataContractSerializerOutputFormatter());
 
                 //options.InputFormatters.Add(new XmlDataContractSerializerInputFormatter());
+            })
+            .AddJsonOptions(options =>
+            {
+                //设置返回的Json中属性名称为小写字母
+                options.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
             });
 
             //获取当前机器名称
@@ -92,6 +98,9 @@ namespace SmallProgramDemo.Api
             var propertyMappingContainer = new PropertyMappingContainer();
             propertyMappingContainer.Register<PostPropertyMapping>();
             services.AddSingleton<IPropertyMappingContainer>(propertyMappingContainer);
+
+            //注册配置ResourceModel塑形属性合法性判断服务
+            services.AddTransient<ITypeHelperService, TypeHelperService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -5,6 +5,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using SmallProgramDemo.Core.Entities;
 using SmallProgramDemo.Core.Interface;
+using SmallProgramDemo.Infrastructure.Extensions;
 using SmallProgramDemo.Infrastructure.Resources;
 using SmallProgramDemo.Infrastructure.Services;
 using System;
@@ -22,6 +23,7 @@ namespace SmallProgramDemo.Api.Controllers
         private readonly IMapper mapper;
         private readonly IUrlHelper urlHelper;
         private readonly IPropertyMappingContainer propertyMappingContainer;
+        private readonly ITypeHelperService typeHelperService;
 
         public PostController(
             IPostRepository postRepository,
@@ -29,7 +31,8 @@ namespace SmallProgramDemo.Api.Controllers
             ILogger<PostController> logger,
             IMapper mapper,
             IUrlHelper urlHelper,
-            IPropertyMappingContainer propertyMappingContainer)
+            IPropertyMappingContainer propertyMappingContainer,
+            ITypeHelperService typeHelperService)
         {
             this.postRepository = postRepository;
             this.unitOfWork = unitOfWork;
@@ -37,16 +40,32 @@ namespace SmallProgramDemo.Api.Controllers
             this.mapper = mapper;
             this.urlHelper = urlHelper;
             this.propertyMappingContainer = propertyMappingContainer;
+            this.typeHelperService = typeHelperService;
         }
 
 
         [HttpGet(Name ="getPosts")]
         public async Task<IActionResult> Get(PostQueryParameters postQueryParameters)
         {
+            if(propertyMappingContainer.ValidateMappingExistsFor<PostResource,Post>(postQueryParameters.OrderBy))
+            {
+                return BadRequest("排序属性映射关系不存，或不可通过该排序属性排序");
+            }
+
+            if (typeHelperService.TypeHasProperties<PostResource>(postQueryParameters.Fields))
+            {
+                return BadRequest("塑形属性不存在");
+            }
+
+
             //返回带有元数据的PaginatedList数据
             var postsWithMateData = await postRepository.GetAllPosts(postQueryParameters);
             //将posts集合映射为PostResource集合，取出其中的post数据集合
-            var postResource = mapper.Map<IEnumerable<Post>, IEnumerable<PostResource>>(postsWithMateData);
+            var postResources = mapper.Map<IEnumerable<Post>, IEnumerable<PostResource>>(postsWithMateData);
+
+            //针对ResourceModel进行属性塑形
+            var shapedPostResources = postResources.ToDynamicIEnumerable(postQueryParameters.Fields);
+
 
             var previousPageLink = postsWithMateData.HasPrevious ?
                 CreatePostUri(postQueryParameters, PaginationResourceUriType.PreviousPage,urlHelper, "getPosts") : null;
@@ -57,10 +76,10 @@ namespace SmallProgramDemo.Api.Controllers
             //提取元数据
             var mate = new
             {
-                PageSize = postsWithMateData.PageSize,
-                PageIndex = postsWithMateData.PageIndex,
-                TotalItemCount = postsWithMateData.TotalItemsCount,
-                PageCount = postsWithMateData.PageCount,
+                postsWithMateData.PageSize,
+                postsWithMateData.PageIndex,
+                postsWithMateData.TotalItemsCount,
+                postsWithMateData.PageCount,
                 previousPageLink,
                 nextPageLink
             };
@@ -72,10 +91,10 @@ namespace SmallProgramDemo.Api.Controllers
 
             //logger.LogError("测试的错误日志记录");
             //throw new Exception("发生了错误");
-            return Ok(postResource);
+            return Ok(shapedPostResources);
         }
         [HttpGet("{id}")]
-        public async Task<IActionResult> Get(int id)
+        public async Task<IActionResult> Get(int id,string fields = null)
         {
             var post = await postRepository.GetPostById(id);
 
@@ -84,10 +103,13 @@ namespace SmallProgramDemo.Api.Controllers
             {
                 return NotFound();
             }
-
+            
             var postResource = mapper.Map<Post, PostResource>(post);
 
-            return Ok(postResource);
+            //单条数据塑形
+            var shapedPostResource = postResource.ToDynamic(fields);
+
+            return Ok(shapedPostResource);
         }
 
         [HttpPost]
