@@ -4,6 +4,9 @@ using SmallProgramDemo.Infrastructure.Resources;
 
 namespace SmallProgramDemo.Api.Extensions
 {
+    /// <summary>
+    /// 配置ResourceModel与EntityModel的属性对应类
+    /// </summary>
     public class MappingProfile : Profile
     {
         public MappingProfile()

@@ -5,7 +5,9 @@ using Microsoft.Extensions.Logging;
 
 namespace SmallProgramDemo.Api.Extensions
 {
-    //自定义的错误处理器管道
+    /// <summary>
+    /// 自定义的错误处理器管道
+    /// </summary>
     public static class ExceptionHandlingExtensions
     {
         public static void UseMyExceptionHandler(this IApplicationBuilder app, ILoggerFactory loggerFactory)

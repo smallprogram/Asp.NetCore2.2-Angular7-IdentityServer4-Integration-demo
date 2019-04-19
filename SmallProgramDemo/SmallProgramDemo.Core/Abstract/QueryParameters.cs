@@ -7,14 +7,20 @@ namespace SmallProgramDemo.Core.Abstract
 {
     public abstract class QueryParameters : INotifyPropertyChanged
     {
-        
 
-        //默认的单页显示的数据条数
+
+        /// <summary>
+        /// 默认的单页显示的数据条数
+        /// </summary>
         private const int DefaultPageSize = 10;
-        //默认的单页最多显示的数据条数
+        /// <summary>
+        /// 默认的单页最多显示的数据条数
+        /// </summary>
         private const int DefaultMaxPageSize = 100;
 
-        //总共的页数属性
+        /// <summary>
+        /// 当前页索引
+        /// </summary>
         private int _pageIndex;
         public int PageIndex
         {
@@ -22,7 +28,9 @@ namespace SmallProgramDemo.Core.Abstract
             set => _pageIndex = value >= 0 ? value : 0;
         }
 
-        //每页显示的数据量
+        /// <summary>
+        /// 每页默认显示的数据量
+        /// </summary>
         private int _pageSize = DefaultPageSize;
         public virtual int PageSize
         {
@@ -30,21 +38,27 @@ namespace SmallProgramDemo.Core.Abstract
             set => SetField(ref _pageSize, value);
         }
 
-        //每页最大显示的数据量
+        /// <summary>
+        /// 每页最大显示的数据量
+        /// </summary>
         private int _maxPageSize = DefaultMaxPageSize;
         protected internal virtual int MaxPageSize
         {
             get => _maxPageSize;
             set => SetField(ref _maxPageSize, value);
         }
-
-        //排序属性
+        /// <summary>
+        /// 排序属性
+        /// </summary>
         private string _orderBy;
         public string OrderBy
         {
             get => _orderBy;
             set => _orderBy = value ?? nameof(IEntity.id);
         }
+        /// <summary>
+        /// 用于塑形的字段
+        /// </summary>
         public string Fields { get; set; }
 
         public event PropertyChangedEventHandler PropertyChanged;

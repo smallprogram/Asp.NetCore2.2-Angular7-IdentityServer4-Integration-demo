@@ -8,12 +8,18 @@ namespace SmallProgramDemo.Core.Entities
     /// <typeparam name="T">数据类型</typeparam>
     public class PaginatedList<T> :List<T> where T: class
     {
-        //页面数据量
+        /// <summary>
+        /// 页面数据量
+        /// </summary>
         public int PageSize { get; set; }
-        //第几页
+        /// <summary>
+        /// 当前页面索引
+        /// </summary>
         public int PageIndex { get; set; }
 
-        //总数据量
+        /// <summary>
+        /// 总数据量
+        /// </summary>
         private int _totalItemsCount;
         public int TotalItemsCount
         {
@@ -21,15 +27,27 @@ namespace SmallProgramDemo.Core.Entities
             set => _totalItemsCount = value >= 0 ? value : 0;
         }
 
-        //总页数
+        /// <summary>
+        /// 总页数
+        /// </summary>
         public int PageCount => TotalItemsCount / PageSize + (TotalItemsCount % PageSize > 0 ? 1 : 0);
 
-        //前一页
+        /// <summary>
+        /// 是否具有前一页
+        /// </summary>
         public bool HasPrevious => PageIndex > 0;
-        //后一页
+        /// <summary>
+        /// 是否具有后一页
+        /// </summary>
         public bool HasNext => PageIndex < PageCount - 1;
 
-        //构造函数
+        /// <summary>
+        /// PaginatedList构造函数
+        /// </summary>
+        /// <param name="pageIndex">当前页索引</param>
+        /// <param name="pageSize">每页显示数据条数</param>
+        /// <param name="totalItemsCount">总数据条数</param>
+        /// <param name="data">数据集合</param>
         public PaginatedList(int pageIndex, int pageSize, int totalItemsCount, IEnumerable<T> data)
         {
             PageIndex = pageIndex;
