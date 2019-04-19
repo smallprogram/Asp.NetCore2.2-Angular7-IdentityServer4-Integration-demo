@@ -49,7 +49,7 @@ namespace SmallProgramDemo.Api.Controllers
         {
             if(propertyMappingContainer.ValidateMappingExistsFor<PostResource,Post>(postQueryParameters.OrderBy))
             {
-                return BadRequest("排序属性映射关系不存，或不可通过该排序属性排序");
+                return BadRequest("排序属性映射关系不存在，或不可通过该排序属性排序");
             }
 
             if (typeHelperService.TypeHasProperties<PostResource>(postQueryParameters.Fields))
@@ -96,6 +96,11 @@ namespace SmallProgramDemo.Api.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(int id,string fields = null)
         {
+            if (typeHelperService.TypeHasProperties<PostResource>(fields))
+            {
+                return BadRequest("塑形属性不存在");
+            }
+
             var post = await postRepository.GetPostById(id);
 
             //处理没找到的情况返回404

@@ -13,3 +13,5 @@
 /SmallProgramDemo/SmallProgramDemo.Core/bin/Debug/netstandard2.0
 /SmallProgramDemo/SmallProgramDemo.Infrastructure/bin/Debug/netstandard2.0
 /SmallProgramDemo/.vs/SmallProgramDemo/DesignTimeBuild
+/SmallProgramDemo/Tools.MarkdownImageConvertBase64/bin/Debug
+/SmallProgramDemo/Tools.MarkdownImageConvertBase64/obj/Debug
