@@ -47,14 +47,16 @@ namespace SmallProgramDemo.Api.Controllers
         [HttpGet(Name ="getPosts")]
         public async Task<IActionResult> Get(PostQueryParameters postQueryParameters)
         {
-            if(propertyMappingContainer.ValidateMappingExistsFor<PostResource,Post>(postQueryParameters.OrderBy))
+            if(!string.IsNullOrWhiteSpace(postQueryParameters.OrderBy) && 
+                propertyMappingContainer.ValidateMappingExistsFor<PostResource,Post>(postQueryParameters.OrderBy))
             {
                 return BadRequest("排序属性映射关系不存在，或不可通过该排序属性排序");
             }
 
-            if (typeHelperService.TypeHasProperties<PostResource>(postQueryParameters.Fields))
+            if (!string.IsNullOrWhiteSpace(postQueryParameters.Fields) && 
+                typeHelperService.TypeHasProperties<PostResource>(postQueryParameters.Fields))
             {
-                return BadRequest("塑形属性不存在");
+                return BadRequest("传入的塑形属性不合法");
             }
 
 
@@ -96,9 +98,10 @@ namespace SmallProgramDemo.Api.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(int id,string fields = null)
         {
-            if (typeHelperService.TypeHasProperties<PostResource>(fields))
+            if (!string.IsNullOrWhiteSpace(fields) && 
+                typeHelperService.TypeHasProperties<PostResource>(fields))
             {
-                return BadRequest("塑形属性不存在");
+                return BadRequest("塑形属性不合法");
             }
 
             var post = await postRepository.GetPostById(id);
