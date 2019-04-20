@@ -18,6 +18,7 @@ using SmallProgramDemo.Infrastructure.Database;
 using SmallProgramDemo.Infrastructure.Repository;
 using SmallProgramDemo.Infrastructure.Resources;
 using SmallProgramDemo.Infrastructure.Services;
+using System.Linq;
 
 namespace SmallProgramDemo.Api
 {
@@ -39,8 +40,14 @@ namespace SmallProgramDemo.Api
                 //配置内容协商不成功时返回406
                 options.ReturnHttpNotAcceptable = true;
                 //配置内容协商使服务器返回资源支持xml格式
-                options.OutputFormatters.Add(new XmlDataContractSerializerOutputFormatter());
+                //options.OutputFormatters.Add(new XmlDataContractSerializerOutputFormatter());
 
+                //配置mvc使用自定义的媒体类型返回数据
+                var outputFormatters = options.OutputFormatters.OfType<JsonOutputFormatter>().FirstOrDefault();
+                if (outputFormatters != null)
+                {
+                    outputFormatters.SupportedMediaTypes.Add("application/vnd.smallprogram.hateoas+json");
+                }
                 //options.InputFormatters.Add(new XmlDataContractSerializerInputFormatter());
             })
             .AddJsonOptions(options =>
