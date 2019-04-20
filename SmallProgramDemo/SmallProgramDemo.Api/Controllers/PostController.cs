@@ -43,18 +43,19 @@ namespace SmallProgramDemo.Api.Controllers
             this.typeHelperService = typeHelperService;
         }
 
+        #region Http方法
 
         [HttpGet(Name ="getPosts")]
         public async Task<IActionResult> Get(PostQueryParameters postQueryParameters)
         {
             if(!string.IsNullOrWhiteSpace(postQueryParameters.OrderBy) && 
-                propertyMappingContainer.ValidateMappingExistsFor<PostResource,Post>(postQueryParameters.OrderBy))
+                !propertyMappingContainer.ValidateMappingExistsFor<PostResource,Post>(postQueryParameters.OrderBy))
             {
                 return BadRequest("排序属性映射关系不存在，或不可通过该排序属性排序");
             }
 
             if (!string.IsNullOrWhiteSpace(postQueryParameters.Fields) && 
-                typeHelperService.TypeHasProperties<PostResource>(postQueryParameters.Fields))
+                !typeHelperService.TypeHasProperties<PostResource>(postQueryParameters.Fields))
             {
                 return BadRequest("传入的塑形属性不合法");
             }
@@ -70,10 +71,10 @@ namespace SmallProgramDemo.Api.Controllers
 
 
             var previousPageLink = postsWithMateData.HasPrevious ?
-                CreatePostUri(postQueryParameters, PaginationResourceUriType.PreviousPage,urlHelper, "getPosts") : null;
+                CreatePostUri(postQueryParameters, PaginationResourceUriType.PreviousPage, "getPosts") : null;
 
             var nextPageLink = postsWithMateData.HasNext ?
-                CreatePostUri(postQueryParameters, PaginationResourceUriType.NextPage, urlHelper, "getPosts") : null;
+                CreatePostUri(postQueryParameters, PaginationResourceUriType.NextPage, "getPosts") : null;
 
             //提取元数据
             var mate = new
@@ -95,11 +96,11 @@ namespace SmallProgramDemo.Api.Controllers
             //throw new Exception("发生了错误");
             return Ok(shapedPostResources);
         }
-        [HttpGet("{id}")]
+        [HttpGet("{id}",Name ="getPost")]
         public async Task<IActionResult> Get(int id,string fields = null)
         {
             if (!string.IsNullOrWhiteSpace(fields) && 
-                typeHelperService.TypeHasProperties<PostResource>(fields))
+                !typeHelperService.TypeHasProperties<PostResource>(fields))
             {
                 return BadRequest("塑形属性不合法");
             }
@@ -117,7 +118,13 @@ namespace SmallProgramDemo.Api.Controllers
             //单条数据塑形
             var shapedPostResource = postResource.ToDynamic(fields);
 
-            return Ok(shapedPostResource);
+            var result = shapedPostResource as IDictionary<string,object>;
+
+            var links = CreateLinksForPost(id, fields);
+
+            result.Add("links", links);
+
+            return Ok(result);
         }
 
         [HttpPost]
@@ -135,17 +142,19 @@ namespace SmallProgramDemo.Api.Controllers
             return Ok();
         }
 
+        #endregion
 
 
+
+        #region 辅助方法
         /// <summary>
         /// 生成前一页，后一页，当前页的URI链接方法
         /// </summary>
         /// <param name="parameters">页面的元数据</param>
         /// <param name="uriType">URI类型</param>
-        /// <param name="_urlHelper">URIHelper</param>
         /// <param name="actionName">需要调用的ActionName</param>
         /// <returns></returns>
-        private string CreatePostUri(PostQueryParameters parameters, PaginationResourceUriType uriType, IUrlHelper _urlHelper, string actionName)
+        private string CreatePostUri(PostQueryParameters parameters, PaginationResourceUriType uriType, string actionName)
         {
             switch (uriType)
             {
@@ -157,7 +166,7 @@ namespace SmallProgramDemo.Api.Controllers
                         orderBy = parameters.OrderBy,
                         fields = parameters.Fields
                     };
-                    return _urlHelper.Link(actionName, previousParameters);
+                    return urlHelper.Link(actionName, previousParameters);
                 case PaginationResourceUriType.NextPage:
                     var nextParameters = new
                     {
@@ -166,7 +175,7 @@ namespace SmallProgramDemo.Api.Controllers
                         orderBy = parameters.OrderBy,
                         fields = parameters.Fields
                     };
-                    return _urlHelper.Link(actionName, nextParameters);
+                    return urlHelper.Link(actionName, nextParameters);
                 default:
                     var currentParameters = new
                     {
@@ -175,8 +184,75 @@ namespace SmallProgramDemo.Api.Controllers
                         orderBy = parameters.OrderBy,
                         fields = parameters.Fields
                     };
-                    return _urlHelper.Link(actionName, currentParameters);
+                    return urlHelper.Link(actionName, currentParameters);
             }
         }
+        /// <summary>
+        /// 为单个资源添加HATEOAS的LINKS
+        /// </summary>
+        /// <param name="id">资源id</param>
+        /// <param name="fields">塑形字段</param>
+        /// <returns>LinkResource集合</returns>
+        private IEnumerable<LinkResource> CreateLinksForPost(int id, string fields = null)
+        {
+            var links = new List<LinkResource>();
+
+            if (string.IsNullOrWhiteSpace(fields))
+            {
+                links.Add(
+                    new LinkResource(
+                        urlHelper.Link("GetPost", new { id }), "self", "GET"));
+            }
+            else
+            {
+                links.Add(
+                    new LinkResource(
+                        urlHelper.Link("GetPost", new { id, fields }), "self", "GET"));
+            }
+
+            links.Add(
+                new LinkResource(
+                    urlHelper.Link("DeletePost", new { id }), "delete_post", "DELETE"));
+
+            return links;
+        }
+
+        /// <summary>
+        /// 为集合资源添加HETAOAS的LINKS
+        /// </summary>
+        /// <param name="postResourceParameters"></param>
+        /// <param name="hasPrevious"></param>
+        /// <param name="hasNext"></param>
+        /// <returns></returns>
+        private IEnumerable<LinkResource> CreateLinksForPosts(PostQueryParameters postResourceParameters,
+            bool hasPrevious, bool hasNext)
+        {
+            var links = new List<LinkResource>
+            {
+                new LinkResource(
+                    CreatePostUri(postResourceParameters, PaginationResourceUriType.CurrentPage,"getPosts"),
+                    "self", "GET")
+            };
+
+            if (hasPrevious)
+            {
+                links.Add(
+                    new LinkResource(
+                        CreatePostUri(postResourceParameters, PaginationResourceUriType.PreviousPage, "getPosts"),
+                        "previous_page", "GET"));
+            }
+
+            if (hasNext)
+            {
+                links.Add(
+                    new LinkResource(
+                        CreatePostUri(postResourceParameters, PaginationResourceUriType.NextPage, "getPosts"),
+                        "next_page", "GET"));
+            }
+
+            return links;
+        }
+
+        #endregion
     }
 }
