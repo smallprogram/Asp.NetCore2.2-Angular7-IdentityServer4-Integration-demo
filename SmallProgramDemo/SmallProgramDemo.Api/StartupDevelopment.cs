@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using FluentValidation;
+using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -42,7 +43,14 @@ namespace SmallProgramDemo.Api
                 //配置内容协商使服务器返回资源支持xml格式
                 //options.OutputFormatters.Add(new XmlDataContractSerializerOutputFormatter());
 
-                //配置mvc使用自定义的媒体类型返回数据
+                //配置core使用自定义的媒体类型作为传入数据
+                var inputFormatter = options.InputFormatters.OfType<JsonInputFormatter>().FirstOrDefault();
+                if(inputFormatter != null)
+                {
+                    inputFormatter.SupportedMediaTypes.Add("application/vnd.smallprogram.post.create+json");
+                }
+                
+                //配置core使用自定义的媒体类型返回数据
                 var outputFormatters = options.OutputFormatters.OfType<JsonOutputFormatter>().FirstOrDefault();
                 if (outputFormatters != null)
                 {
@@ -54,7 +62,8 @@ namespace SmallProgramDemo.Api
             {
                 //设置返回的Json中属性名称为小写字母
                 options.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
-            });
+            })
+            .AddFluentValidation();//配置Asp.net Core启用FluentValidation验证
 
             //获取当前机器名称
             var MachineName = System.Environment.MachineName;
@@ -91,7 +100,7 @@ namespace SmallProgramDemo.Api
             services.AddAutoMapper();
 
             //注册FluentValidat验证器
-            services.AddTransient<IValidator<PostResource>, PostResourceValidator>();
+            services.AddTransient<IValidator<PostAddResource>, PostAddOrUpdateResourceValidator<PostAddResource>>();
 
             //注册配置URI Helper
             services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();  //单例的ActionContextAccessor依赖注入
@@ -113,9 +122,9 @@ namespace SmallProgramDemo.Api
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
-            app.UseDeveloperExceptionPage();
+            //app.UseDeveloperExceptionPage();
             //使用自定义的错误处理器管道
-            //app.UseMyExceptionHandler(loggerFactory);
+            app.UseMyExceptionHandler(loggerFactory);
 
             //https重定向
             app.UseHttpsRedirection();

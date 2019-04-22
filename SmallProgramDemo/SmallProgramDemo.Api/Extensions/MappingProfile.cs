@@ -22,6 +22,10 @@ namespace SmallProgramDemo.Api.Extensions
                 .ForMember(
                 target => target.LastModified,
                 entity => entity.MapFrom(src => src.UpdateTime));
+
+
+            CreateMap<PostAddResource, Post>();
+            CreateMap<PostUpdateResource, Post>();
         }
     }
 }

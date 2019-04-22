@@ -48,7 +48,7 @@ namespace SmallProgramDemo.Api.Controllers
         #region Http方法
 
         #region 使用RequestHeaderMatchingMediaType Attribute进行判定执行哪种返回类型的Get方法
-        [HttpGet(Name = "getPosts")]
+        [HttpGet(Name = "GetPosts")]
         [RequestHeaderMatchingMediaType("Accept", new[] { "application/vnd.smallprogram.hateoas+json" })]
         public async Task<IActionResult> GetPostsHateoas(PostQueryParameters postQueryParameters)
         {
@@ -120,7 +120,7 @@ namespace SmallProgramDemo.Api.Controllers
 
         }
 
-        [HttpGet(Name = "getPosts")]
+        [HttpGet(Name = "GetPosts")]
         [RequestHeaderMatchingMediaType("Accept", new[] { "application/json","/" })]
         public async Task<IActionResult> Get(PostQueryParameters postQueryParameters)
         {
@@ -146,8 +146,8 @@ namespace SmallProgramDemo.Api.Controllers
             //针对ResourceModel进行属性塑形
             var shapedPostResources = postResources.ToDynamicIEnumerable(postQueryParameters.Fields);
 
-            var previousPageLink = postsWithMateData.HasPrevious ? CreatePostUri(postQueryParameters, PaginationResourceUriType.PreviousPage, "getPosts") : null;
-            var nextPageLink = postsWithMateData.HasNext ? CreatePostUri(postQueryParameters, PaginationResourceUriType.NextPage, "getPosts") : null;
+            var previousPageLink = postsWithMateData.HasPrevious ? CreatePostUri(postQueryParameters, PaginationResourceUriType.PreviousPage, "GetPosts") : null;
+            var nextPageLink = postsWithMateData.HasNext ? CreatePostUri(postQueryParameters, PaginationResourceUriType.NextPage, "GetPosts") : null;
             #region 提取元数据，并将该数据添加到响应Response自定义X-Pagination的Header中
             //提取元数据
             var mate = new
@@ -176,7 +176,7 @@ namespace SmallProgramDemo.Api.Controllers
         #endregion
 
         #region 使用[FromHeader(Name = "Accept")] string mediaType 参数，在代码中用if判定返回类型的GET方法
-        [HttpGet(Name = "getPosts")]
+        [HttpGet(Name = "GetPosts")]
         public async Task<IActionResult> Get_Old(PostQueryParameters postQueryParameters,
             [FromHeader(Name = "Accept")] string mediaType)
         {
@@ -250,8 +250,8 @@ namespace SmallProgramDemo.Api.Controllers
             }
             else
             {
-                var previousPageLink = postsWithMateData.HasPrevious ? CreatePostUri(postQueryParameters, PaginationResourceUriType.PreviousPage, "getPosts") : null;
-                var nextPageLink = postsWithMateData.HasNext ? CreatePostUri(postQueryParameters, PaginationResourceUriType.NextPage, "getPosts") : null;
+                var previousPageLink = postsWithMateData.HasPrevious ? CreatePostUri(postQueryParameters, PaginationResourceUriType.PreviousPage, "GetPosts") : null;
+                var nextPageLink = postsWithMateData.HasNext ? CreatePostUri(postQueryParameters, PaginationResourceUriType.NextPage, "GetPosts") : null;
                 #region 提取元数据，并将该数据添加到响应Response自定义X-Pagination的Header中
                 //提取元数据
                 var mate = new
@@ -280,7 +280,7 @@ namespace SmallProgramDemo.Api.Controllers
         #endregion 
 
 
-        [HttpGet("{id}", Name = "getPost")]
+        [HttpGet("{id}", Name = "GetPost")]
         public async Task<IActionResult> Get(int id, string fields = null)
         {
             #region 参数合法性判断
@@ -317,19 +317,64 @@ namespace SmallProgramDemo.Api.Controllers
             return Ok(result);
         }
 
-        [HttpPost]
-        public async Task<IActionResult> Post()
+        [HttpPost(Name ="CreatePost")]
+        //由于传入的参数数据postResource的一个变种，数据一种独特的媒体类型，应该传入特定格式的媒体类型数据，需要在Strartup中注册该媒体类型
+        //限制Content-Type的媒体类型为"application/vnd.smallprogram.post.create+json"
+        [RequestHeaderMatchingMediaType("Content-Type", new[] { "application/vnd.smallprogram.post.create+json" })]
+        //由于传出的响应类型包含HATEOAS，所以需要针对响应的传出类型设置特定的媒体格式，需要在Strartup中注册该媒体类型
+        //限制Accept的媒体类型为"application/vnd.smallprogram.hateoas+json"
+        [RequestHeaderMatchingMediaType("Accept", new[] { "application/vnd.smallprogram.hateoas+json" })]
+        public async Task<IActionResult> Post([FromBody] PostAddResource postAddResource)
         {
-            var post = new Post
+            #region 数据合法性判断
+            if (postAddResource == null)
             {
-                Title = "Post Title add",
-                Body = "Post Body add",
-                Author = "zhusir",
-                LastModified = DateTime.Now
-            };
-            postRepository.AddPost(post);
-            await unitOfWork.SaveAsync();
-            return Ok();
+                return BadRequest();
+            }
+            if (!ModelState.IsValid)
+            {
+                return new MyUnprocessableEntityObjectResult(ModelState);
+            }
+            #endregion
+
+            //从PostResource转换为PostEntity
+            var newPost = mapper.Map<PostAddResource, Post>(postAddResource);
+            //完善属性值
+            newPost.Author = "zhusir";
+            newPost.LastModified = DateTime.Now;
+
+            #region 向数据库添加数据
+            postRepository.AddPost(newPost);
+
+            if(!await unitOfWork.SaveAsync())
+            {
+                throw new Exception("保存失败");
+            }
+            #endregion
+
+            //从postEntity转换为PostResource
+            var resultResouce = mapper.Map<Post, PostResource>(newPost);
+
+            #region 添加HATEOAS特性
+            //为新添加的资源创建links属性
+            var links = CreateLinksForPost(newPost.id);
+            //向资源中添加links属性
+            var linkedPostResource = resultResouce.ToDynamic() as IDictionary<string, object>;
+            linkedPostResource.Add("links", links);
+            #endregion
+            //通过CreatedAtRoute()方法返回201代码，并且在Header中附带GET到新建资源的URI
+            return CreatedAtRoute("GetPost", new { id = linkedPostResource["id"] }, linkedPostResource);
+
+            //var post = new Post
+            //{
+            //    Title = "Post Title add",
+            //    Body = "Post Body add",
+            //    Author = "zhusir",
+            //    LastModified = DateTime.Now
+            //};
+            //postRepository.AddPost(post);
+            //await unitOfWork.SaveAsync();
+            //return Ok();
         }
 
         #endregion
