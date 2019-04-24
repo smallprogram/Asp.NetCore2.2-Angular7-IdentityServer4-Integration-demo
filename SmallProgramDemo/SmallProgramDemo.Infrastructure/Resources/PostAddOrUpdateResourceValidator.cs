@@ -20,7 +20,7 @@ namespace SmallProgramDemo.Infrastructure.Resources
                 .NotNull()
                 .WithName("正文")
                 .WithMessage("required|{{PropertyName}是必填的")
-                .MinimumLength(100)
+                .MinimumLength(5)
                 .WithMessage("minlength|{PropertyName}的最小长度是{MinLength}");
         }
     }

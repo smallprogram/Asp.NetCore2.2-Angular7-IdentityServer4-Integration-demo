@@ -47,7 +47,8 @@ namespace SmallProgramDemo.Api
                 var inputFormatter = options.InputFormatters.OfType<JsonInputFormatter>().FirstOrDefault();
                 if(inputFormatter != null)
                 {
-                    inputFormatter.SupportedMediaTypes.Add("application/vnd.smallprogram.post.create+json");
+                    inputFormatter.SupportedMediaTypes.Add("application/vnd.smallprogram.post.create+json"); 
+                    inputFormatter.SupportedMediaTypes.Add("application/vnd.smallprogram.post.update+json");
                 }
                 
                 //配置core使用自定义的媒体类型返回数据
@@ -101,6 +102,7 @@ namespace SmallProgramDemo.Api
 
             //注册FluentValidat验证器
             services.AddTransient<IValidator<PostAddResource>, PostAddOrUpdateResourceValidator<PostAddResource>>();
+            services.AddTransient<IValidator<PostUpdateResource>, PostAddOrUpdateResourceValidator<PostUpdateResource>>();
 
             //注册配置URI Helper
             services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();  //单例的ActionContextAccessor依赖注入

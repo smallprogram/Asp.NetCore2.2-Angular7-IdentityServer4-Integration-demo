@@ -11,12 +11,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SmallProgramDemo.Infrastruc
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{9E7750F7-67C7-4487-A5BA-B55306B4DC65}"
 	ProjectSection(SolutionItems) = preProject
-		2019-04-15开发日志.md = 2019-04-15开发日志.md
-		2019-04-16开发日志.md = 2019-04-16开发日志.md
-		2019-04-17开发日志.md = 2019-04-17开发日志.md
-		2019-04-18开发日志.md = 2019-04-18开发日志.md
-		2019-04-19开发日志.md = 2019-04-19开发日志.md
-		2019-04-22开发日志.md = 2019-04-22开发日志.md
+		001.基本项目搭建.md = 001.基本项目搭建.md
+		002.系统日志、ASP.Net Core配置及错误处理.md = 002.系统日志、ASP.Net Core配置及错误处理.md
+		003.REST、HTTP GET.md = 003.REST、HTTP GET.md
+		004.HTTP GET翻页过滤排序.md = 004.HTTP GET翻页过滤排序.md
+		005.资源塑形、HATEOAS、MediaType.md = 005.资源塑形、HATEOAS、MediaType.md
+		006.POST,PUT,PATCH,DELETE,Model验证.md = 006.POST,PUT,PATCH,DELETE,Model验证.md
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tools.MarkdownImageConvertBase64", "Tools.MarkdownImageConvertBase64\Tools.MarkdownImageConvertBase64.csproj", "{B539EF70-74B2-4716-95A2-97E56773DB26}"

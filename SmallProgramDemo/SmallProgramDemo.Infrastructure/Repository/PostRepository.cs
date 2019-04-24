@@ -24,14 +24,7 @@ namespace SmallProgramDemo.Infrastructure.Repository
             this.propertyMappingContainer = propertyMappingContainer;
         }
 
-
-
-        public void AddPost(Post post)
-        {
-            myContext.Posts.Add(post);
-        }
-
-        public async Task<PaginatedList<Post>> GetAllPosts(PostQueryParameters postQueryParameters)
+        public async Task<PaginatedList<Post>> GetAllPostsAsync(PostQueryParameters postQueryParameters)
         {
             var query = myContext.Posts.AsQueryable();
 
@@ -74,9 +67,24 @@ namespace SmallProgramDemo.Infrastructure.Repository
             //return await myContext.Posts.ToListAsync();
         }
 
-        public async Task<Post> GetPostById(int id)
+        public async Task<Post> GetPostByIdAsync(int id)
         {
             return await myContext.Posts.FindAsync(id);
+        }
+
+        public void AddPost(Post post)
+        {
+            myContext.Posts.Add(post);
+        }
+
+        public void Delete(Post post)
+        {
+            myContext.Posts.Remove(post);
+        }
+
+        public void Update(Post post)
+        {
+            myContext.Entry(post).State = EntityState.Modified;
         }
     }
 }

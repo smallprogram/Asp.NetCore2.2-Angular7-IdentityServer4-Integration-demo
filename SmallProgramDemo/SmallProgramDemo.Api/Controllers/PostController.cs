@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
@@ -68,7 +69,7 @@ namespace SmallProgramDemo.Api.Controllers
             #endregion
 
             //返回带有元数据的PaginatedList数据
-            var postsWithMateData = await postRepository.GetAllPosts(postQueryParameters);
+            var postsWithMateData = await postRepository.GetAllPostsAsync(postQueryParameters);
             //将posts集合映射为PostResource集合，取出其中的post数据集合
             var postResources = mapper.Map<IEnumerable<Post>, IEnumerable<PostResource>>(postsWithMateData);
             //针对ResourceModel进行属性塑形
@@ -121,7 +122,7 @@ namespace SmallProgramDemo.Api.Controllers
         }
 
         [HttpGet(Name = "GetPosts")]
-        [RequestHeaderMatchingMediaType("Accept", new[] { "application/json","/" })]
+        [RequestHeaderMatchingMediaType("Accept", new[] { "application/json", "*/*" })]
         public async Task<IActionResult> Get(PostQueryParameters postQueryParameters)
         {
             #region 参数合法性判断
@@ -140,7 +141,7 @@ namespace SmallProgramDemo.Api.Controllers
             #endregion
 
             //返回带有元数据的PaginatedList数据
-            var postsWithMateData = await postRepository.GetAllPosts(postQueryParameters);
+            var postsWithMateData = await postRepository.GetAllPostsAsync(postQueryParameters);
             //将posts集合映射为PostResource集合，取出其中的post数据集合
             var postResources = mapper.Map<IEnumerable<Post>, IEnumerable<PostResource>>(postsWithMateData);
             //针对ResourceModel进行属性塑形
@@ -196,7 +197,7 @@ namespace SmallProgramDemo.Api.Controllers
             #endregion
 
             //返回带有元数据的PaginatedList数据
-            var postsWithMateData = await postRepository.GetAllPosts(postQueryParameters);
+            var postsWithMateData = await postRepository.GetAllPostsAsync(postQueryParameters);
             //将posts集合映射为PostResource集合，取出其中的post数据集合
             var postResources = mapper.Map<IEnumerable<Post>, IEnumerable<PostResource>>(postsWithMateData);
             //针对ResourceModel进行属性塑形
@@ -293,7 +294,7 @@ namespace SmallProgramDemo.Api.Controllers
             #endregion
 
             //获取当个post的Entity
-            var post = await postRepository.GetPostById(id);
+            var post = await postRepository.GetPostByIdAsync(id);
 
             //处理没找到的情况返回404
             if (post == null)
@@ -317,7 +318,7 @@ namespace SmallProgramDemo.Api.Controllers
             return Ok(result);
         }
 
-        [HttpPost(Name ="CreatePost")]
+        [HttpPost(Name = "CreatePost")]
         //由于传入的参数数据postResource的一个变种，数据一种独特的媒体类型，应该传入特定格式的媒体类型数据，需要在Strartup中注册该媒体类型
         //限制Content-Type的媒体类型为"application/vnd.smallprogram.post.create+json"
         [RequestHeaderMatchingMediaType("Content-Type", new[] { "application/vnd.smallprogram.post.create+json" })]
@@ -346,7 +347,7 @@ namespace SmallProgramDemo.Api.Controllers
             #region 向数据库添加数据
             postRepository.AddPost(newPost);
 
-            if(!await unitOfWork.SaveAsync())
+            if (!await unitOfWork.SaveAsync())
             {
                 throw new Exception("保存失败");
             }
@@ -375,6 +376,105 @@ namespace SmallProgramDemo.Api.Controllers
             //postRepository.AddPost(post);
             //await unitOfWork.SaveAsync();
             //return Ok();
+        }
+
+
+        [HttpDelete("{id}", Name = "DeletePost")]
+        public async Task<IActionResult> DeletePost(int id)
+        {
+            var post = await postRepository.GetPostByIdAsync(id);
+            if (post == null)
+            {
+                return NotFound();
+            }
+
+            postRepository.Delete(post);
+
+            if (!await unitOfWork.SaveAsync())
+            {
+                throw new Exception($"删除post id: {id} 失败");
+            }
+
+            //204
+            return NoContent();
+        }
+
+        [HttpPut("{id}", Name = "UpdatePost")]
+        [RequestHeaderMatchingMediaType("Content-Type", new[] { "application/vnd.smallprogram.post.update+json" })]
+        public async Task<IActionResult> UpdatePost(int id, [FromBody] PostUpdateResource postUpdate)
+        {
+            if (postUpdate == null)
+            {
+                return BadRequest();
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return new MyUnprocessableEntityObjectResult(ModelState);
+            }
+
+            var post = await postRepository.GetPostByIdAsync(id);
+            if (post == null)
+            {
+                return NotFound();
+            }
+
+            post.LastModified = DateTime.Now;
+            mapper.Map(postUpdate, post);
+
+            if (!await unitOfWork.SaveAsync())
+            {
+                throw new Exception($"更新 post {id} 失败.");
+            }
+            return NoContent();
+        }
+
+        [HttpPatch("{id}", Name = "PartiallyUpdatePost")]
+        public async Task<IActionResult> PartiallyUpdateCityForCountry(int id,
+           [FromBody] JsonPatchDocument<PostUpdateResource> patchDoc)
+        {
+            //更新数据合法性验证
+            if (patchDoc == null)
+            {
+                return BadRequest();
+            }
+
+            //获取数据库中Entity实体数据
+            var post = await postRepository.GetPostByIdAsync(id);
+            if (post == null)
+            {
+                return NotFound();
+            }
+
+            //将Entity映射为postUpdateResourceModel，
+            var postToPatch = mapper.Map<PostUpdateResource>(post);
+
+            //将修改的数据传入ResourceModel中
+            patchDoc.ApplyTo(postToPatch, ModelState);
+
+            //针对修改的ResourceModel进行合法性验证
+            TryValidateModel(postToPatch);
+
+            //验证失败返回自定义错误
+            if (!ModelState.IsValid)
+            {
+                return new MyUnprocessableEntityObjectResult(ModelState);
+            }
+
+            //将修改后的ResourceModel映射为EntityModel
+            mapper.Map(postToPatch, post);
+
+            //向数据库提交修改的EntityModel
+            post.LastModified = DateTime.Now;
+            postRepository.Update(post);
+
+            if (!await unitOfWork.SaveAsync())
+            {
+                throw new Exception($"patch局部更新 {id} 失败.");
+            }
+
+            //返回204
+            return NoContent();
         }
 
         #endregion
@@ -446,6 +546,15 @@ namespace SmallProgramDemo.Api.Controllers
             links.Add(
                 new LinkResource(
                     urlHelper.Link("DeletePost", new { id }), "delete_post", "DELETE"));
+
+            links.Add(
+                new LinkResource(
+                    urlHelper.Link("UpdatePost", new { id }), "put_post", "PUT"));
+
+            links.Add(
+                new LinkResource(
+                    urlHelper.Link("PartiallyUpdatePost", new { id }), "patch_post", "PATCH"));
+
 
             return links;
         }
