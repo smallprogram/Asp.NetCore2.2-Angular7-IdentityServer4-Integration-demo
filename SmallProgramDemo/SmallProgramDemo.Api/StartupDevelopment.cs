@@ -1,10 +1,13 @@
 ﻿using AutoMapper;
 using FluentValidation;
 using FluentValidation.AspNetCore;
+using IdentityServer4.AccessTokenValidation;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.AspNetCore.Mvc.Routing;
@@ -119,6 +122,34 @@ namespace SmallProgramDemo.Api
 
             //注册配置ResourceModel塑形属性合法性判断服务
             services.AddTransient<ITypeHelperService, TypeHelperService>();
+
+
+            #region 配置IdentityServer4的AccessToken验证
+
+            services.AddAuthentication(IdentityServerAuthenticationDefaults.AuthenticationScheme)
+                .AddIdentityServerAuthentication(options =>
+                {
+                    options.Authority = "https://localhost:5001"; //授权地址配置为Idp的地址
+                    options.ApiName = "RESTApi";   //授权ApiName配置为Idp中配置的Scopes里的ApiName
+                });
+
+            #endregion
+
+            #region 配置所有控制器访问策略
+
+            services.Configure<MvcOptions>(options =>
+            {
+                //配置策略，所有控制器只有经过身份验证的用户可以访问
+                var policy = new AuthorizationPolicyBuilder()
+                                .RequireAuthenticatedUser()
+                                .Build();
+                //添加策略
+                options.Filters.Add(new AuthorizeFilter(policy));
+            });
+
+            #endregion
+
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -128,6 +159,7 @@ namespace SmallProgramDemo.Api
             //使用自定义的错误处理器管道
             app.UseMyExceptionHandler(loggerFactory);
 
+            app.UseAuthentication();
             //https重定向
             app.UseHttpsRedirection();
 
