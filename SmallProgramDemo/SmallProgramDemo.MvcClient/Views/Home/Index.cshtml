@@ -2,7 +2,43 @@
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+@using Microsoft.AspNetCore.Authentication
+
+
+<h1>@ViewData["Title"]</h1>
+
+<p>一些Policy</p>
+
+<h2>Access Token</h2>
+<p>@ViewBag.accessToken</p>
+
+<h2>id Token</h2>
+<p>@ViewBag.idToken</p>
+
+<h2>refresh Token</h2>
+<p>@ViewBag.refreshToken</p>
+
+
+
+
+
+
+<h2>用户Claims</h2>
+
+<dl>
+    @foreach (var claim in User.Claims)
+    {
+        <dt>@claim.Type</dt>
+        <dd>@claim.Value</dd>
+    }
+</dl>
+
+<h2>Properties</h2>
+
+<dl>
+    @foreach (var prop in (await Context.AuthenticateAsync()).Properties.Items)
+    {
+        <dt>@prop.Key</dt>
+        <dd>@prop.Value</dd>
+    }
+</dl>
