@@ -1,12 +1,13 @@
-{
+﻿{
   "profiles": {
-    "SelfHost": {
+    "SmallProgramDemo.MvcClient": {
       "commandName": "Project",
       "launchBrowser": true,
+      "launchUrl": "https://localhost:7001",
+      "applicationUrl": "https://localhost:7001;http://localhost:7000",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
-      },
-      "applicationUrl": "http://localhost:5000;https://localhost:5001"
+      }
     }
   }
 }

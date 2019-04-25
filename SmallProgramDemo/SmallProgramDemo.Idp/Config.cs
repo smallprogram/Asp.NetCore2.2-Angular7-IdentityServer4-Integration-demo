@@ -2,6 +2,7 @@
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
 
+using IdentityServer4;
 using IdentityServer4.Models;
 using System.Collections.Generic;
 
@@ -46,17 +47,21 @@ namespace SmallProgramDemo.Idp
                 new Client
                 {
                     ClientId = "mvc",
-                    ClientName = "MVC Client",
+                    ClientName = "MVC 客户端",
 
                     AllowedGrantTypes = GrantTypes.HybridAndClientCredentials,
                     ClientSecrets = { new Secret("49C1A7E1-0C79-4A89-A3D6-A37998FB86B0".Sha256()) },
 
-                    RedirectUris = { "http://localhost:5001/signin-oidc" },
-                    FrontChannelLogoutUri = "http://localhost:5001/signout-oidc",
-                    PostLogoutRedirectUris = { "http://localhost:5001/signout-callback-oidc" },
+                    RedirectUris = { "http://localhost:7001/signin-oidc" },
+                    FrontChannelLogoutUri = "http://localhost:7001/signout-oidc",
+                    PostLogoutRedirectUris = { "http://localhost:7001/signout-callback-oidc" },
 
                     AllowOfflineAccess = true,
-                    AllowedScopes = { "openid", "profile", "api1" }
+                    //AllowedScopes = { "openid", "profile", "api1" }
+                    AllowedScopes =
+                    {
+                        IdentityServerConstants.StandardScopes.OpenId
+                    }
                 },
 
                 // SPA client using implicit flow

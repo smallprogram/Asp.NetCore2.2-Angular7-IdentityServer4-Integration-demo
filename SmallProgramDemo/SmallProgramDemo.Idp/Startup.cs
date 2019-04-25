@@ -63,6 +63,17 @@ namespace SmallProgramDemo.Idp
                 throw new Exception("need to configure key material");
             }
 
+
+            //https支持
+            services.AddHsts(options =>
+            {
+                options.Preload = true;
+                options.IncludeSubDomains = true;
+                options.MaxAge = TimeSpan.FromDays(60);
+                // options.ExcludedHosts.Add("example.com");
+                // options.ExcludedHosts.Add("www.example.com");
+            });
+
             services.AddAuthentication()
                 .AddGoogle(options =>
                 {
@@ -84,7 +95,10 @@ namespace SmallProgramDemo.Idp
             else
             {
                 app.UseExceptionHandler("/Home/Error");
+                app.UseHsts();
             }
+
+            app.UseHttpsRedirection();
 
             app.UseStaticFiles();
             app.UseIdentityServer();

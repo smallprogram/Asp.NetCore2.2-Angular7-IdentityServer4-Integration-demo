@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SmallProgramDemo.Core", "Sm
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SmallProgramDemo.Infrastructure", "SmallProgramDemo.Infrastructure\SmallProgramDemo.Infrastructure.csproj", "{122F264E-3FC2-491C-9867-9529F5146432}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{9E7750F7-67C7-4487-A5BA-B55306B4DC65}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "README", "README", "{9E7750F7-67C7-4487-A5BA-B55306B4DC65}"
 	ProjectSection(SolutionItems) = preProject
 		001.基本项目搭建.md = 001.基本项目搭建.md
 		002.系统日志、ASP.Net Core配置及错误处理.md = 002.系统日志、ASP.Net Core配置及错误处理.md
@@ -22,6 +22,16 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tools.MarkdownImageConvertBase64", "Tools.MarkdownImageConvertBase64\Tools.MarkdownImageConvertBase64.csproj", "{B539EF70-74B2-4716-95A2-97E56773DB26}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SmallProgramDemo.Idp", "SmallProgramDemo.Idp\SmallProgramDemo.Idp.csproj", "{9247053D-4096-4941-8931-D4A5A362DF32}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SmallProgramDemo.ApiResource", "SmallProgramDemo.ApiResource", "{B108ACB6-9376-4C3E-9F03-282A6FCB27C8}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SmallProgramDemo.IdentityServer", "SmallProgramDemo.IdentityServer", "{D816E18F-0186-4AA8-A322-C8FBE2B3959D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SmallProgramDemo.Client", "SmallProgramDemo.Client", "{E4C53CA1-AA90-4C88-A106-F8F5E4C10E75}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tools", "Tools", "{18A54004-9260-43CB-A8B4-B9AB4828D36C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmallProgramDemo.MvcClient", "SmallProgramDemo.MvcClient\SmallProgramDemo.MvcClient.csproj", "{80235033-A75B-4848-9D9C-5CFC8EE8E78F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -49,9 +59,21 @@ Global
 		{9247053D-4096-4941-8931-D4A5A362DF32}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9247053D-4096-4941-8931-D4A5A362DF32}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9247053D-4096-4941-8931-D4A5A362DF32}.Release|Any CPU.Build.0 = Release|Any CPU
+		{80235033-A75B-4848-9D9C-5CFC8EE8E78F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{80235033-A75B-4848-9D9C-5CFC8EE8E78F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{80235033-A75B-4848-9D9C-5CFC8EE8E78F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{80235033-A75B-4848-9D9C-5CFC8EE8E78F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{3B957A1C-4958-41D1-B6AA-F41B71869AC3} = {B108ACB6-9376-4C3E-9F03-282A6FCB27C8}
+		{3AE673C5-F1AB-4841-9884-B2C637EE2F2F} = {B108ACB6-9376-4C3E-9F03-282A6FCB27C8}
+		{122F264E-3FC2-491C-9867-9529F5146432} = {B108ACB6-9376-4C3E-9F03-282A6FCB27C8}
+		{B539EF70-74B2-4716-95A2-97E56773DB26} = {18A54004-9260-43CB-A8B4-B9AB4828D36C}
+		{9247053D-4096-4941-8931-D4A5A362DF32} = {D816E18F-0186-4AA8-A322-C8FBE2B3959D}
+		{80235033-A75B-4848-9D9C-5CFC8EE8E78F} = {E4C53CA1-AA90-4C88-A106-F8F5E4C10E75}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {D5FA3C7A-1305-45BA-974B-678DEBF3684C}
