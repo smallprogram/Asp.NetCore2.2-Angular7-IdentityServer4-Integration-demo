@@ -1,0 +1,13 @@
+<div *ngIf="!pageMeta">
+  <mat-spinner></mat-spinner>
+</div>
+<div *ngIf="pageMeta">
+  <div *ngFor="let item of posts">
+    {{item.title}}
+  </div>
+
+
+  <ng-container *ngFor="let item of posts">
+    {{item.title}}
+  </ng-container>
+</div>

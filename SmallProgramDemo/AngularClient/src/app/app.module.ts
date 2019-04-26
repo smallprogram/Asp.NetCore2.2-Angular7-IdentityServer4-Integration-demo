@@ -9,12 +9,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations'; 
 //已经移动到shared/material模块中
 //import { MatButtonModule, MatCheckboxModule } from '@angular/material'; //material按钮，复选框模块
 //import { MatIconModule } from '@angular/material/icon'; //material图标模块
-
-
-
-
-
 import { AppComponent } from './app.component';
+
 
 
 
@@ -26,7 +22,6 @@ import { AppComponent } from './app.component';
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule
-    
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -16,6 +16,12 @@
         "@schematics/angular:module": {
           "spec": false,
           "routing": true
+        },
+        "@schematics/angular:service": {
+          "spec": false
+        },
+        "@schematics/angular:class": {
+          "spec": false
         }
       },
       "architect": {
@@ -67,7 +73,8 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "AngularClient:build"
+            "browserTarget": "AngularClient:build",
+            "proxyConfig": "proxy.conf.js"
           },
           "configurations": {
             "production": {
