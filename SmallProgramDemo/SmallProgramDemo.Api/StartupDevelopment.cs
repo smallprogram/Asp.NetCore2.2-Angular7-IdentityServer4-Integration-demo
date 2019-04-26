@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Authorization;
+using Microsoft.AspNetCore.Mvc.Cors.Internal;
 using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.AspNetCore.Mvc.Routing;
@@ -92,7 +93,7 @@ namespace SmallProgramDemo.Api
             services.AddHttpsRedirection(options =>
             {
                 options.RedirectStatusCode = StatusCodes.Status307TemporaryRedirect;
-                options.HttpsPort = 5001;
+                options.HttpsPort = 6001;
             });
 
             //注册Respository
@@ -135,10 +136,24 @@ namespace SmallProgramDemo.Api
 
             #endregion
 
+            //配置允许跨域请求
+            services.AddCors(options =>
+            {
+                options.AddPolicy("AllowAngularDevOrigin", builder =>
+                 builder.WithOrigins("http://localhost:4200")
+                 .WithExposedHeaders("X-Pagination") //允许自定义header
+                 .AllowAnyHeader()
+                 .AllowAnyMethod());
+            });
+
+
             #region 配置所有控制器访问策略
 
             services.Configure<MvcOptions>(options =>
             {
+                //配置跨域过滤器
+                options.Filters.Add(new CorsAuthorizationFilterFactory("AllowAngularDevOrigin"));
+
                 //配置策略，所有控制器只有经过身份验证的用户可以访问
                 var policy = new AuthorizationPolicyBuilder()
                                 .RequireAuthenticatedUser()
@@ -159,9 +174,12 @@ namespace SmallProgramDemo.Api
             //使用自定义的错误处理器管道
             app.UseMyExceptionHandler(loggerFactory);
 
-            app.UseAuthentication();
+            app.UseCors("AllowAngularDevOrigin");
+            
             //https重定向
             app.UseHttpsRedirection();
+
+            app.UseAuthentication();
 
             app.UseMvc();
         }

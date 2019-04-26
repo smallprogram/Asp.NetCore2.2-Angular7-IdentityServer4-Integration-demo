@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -49,6 +50,7 @@ namespace SmallProgramDemo.Api.Controllers
         #region Http方法
 
         #region 使用RequestHeaderMatchingMediaType Attribute进行判定执行哪种返回类型的Get方法
+        [AllowAnonymous]
         [HttpGet(Name = "GetPosts")]
         [RequestHeaderMatchingMediaType("Accept", new[] { "application/vnd.smallprogram.hateoas+json" })]
         public async Task<IActionResult> GetPostsHateoas(PostQueryParameters postQueryParameters)
