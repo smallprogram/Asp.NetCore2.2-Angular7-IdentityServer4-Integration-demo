@@ -63,6 +63,15 @@ namespace SmallProgramDemo.Idp
                 throw new Exception("need to configure key material");
             }
 
+            //配置允许跨域请求
+            services.AddCors(options =>
+            {
+                options.AddPolicy("AllowAngularDevOrigin", policy =>
+                 policy.WithOrigins("http://localhost:4200")
+                 .WithExposedHeaders("X-Pagination") //允许自定义header
+                 .AllowAnyHeader()
+                 .AllowAnyMethod());
+            });
 
             //https支持
             services.AddHsts(options =>
@@ -97,7 +106,7 @@ namespace SmallProgramDemo.Idp
                 app.UseExceptionHandler("/Home/Error");
                 app.UseHsts();
             }
-
+            app.UseCors();
             app.UseHttpsRedirection();
 
             app.UseStaticFiles();

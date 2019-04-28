@@ -71,25 +71,32 @@ namespace SmallProgramDemo.Idp
                 // SPA client using implicit flow
                 new Client
                 {
-                    ClientId = "spa",
+                    ClientId = "AngularClient",
                     ClientName = "SPA Client",
-                    ClientUri = "http://identityserver.io",
+                    ClientUri = "http://localhost:4200",
 
                     AllowedGrantTypes = GrantTypes.Implicit,
                     AllowAccessTokensViaBrowser = true,
+                    RequireConsent = false, //是否需要用户点击同意
+                    AccessTokenLifetime = 60 *5, //AccessToken过期时间 单位是秒
 
                     RedirectUris =
                     {
-                        "http://localhost:5002/index.html",
-                        "http://localhost:5002/callback.html",
-                        "http://localhost:5002/silent.html",
-                        "http://localhost:5002/popup.html",
+                        "http://localhost:4200/signin-oidc",
+                        "http://localhost:4200/redirect-silentrenew",
                     },
 
-                    PostLogoutRedirectUris = { "http://localhost:5002/index.html" },
-                    AllowedCorsOrigins = { "http://localhost:5002" },
+                    PostLogoutRedirectUris = { "http://localhost:4200/" },
+                    
 
-                    AllowedScopes = { "openid", "profile", "api1" }
+                    AllowedCorsOrigins = { "http://localhost:4200" },
+
+                    AllowedScopes = {
+                        IdentityServerConstants.StandardScopes.OpenId,
+                        IdentityServerConstants.StandardScopes.Profile,
+                        IdentityServerConstants.StandardScopes.Email,
+                        "RESTApi"
+                    }
                 }
             };
         }
