@@ -50,6 +50,7 @@ namespace SmallProgramDemo.Api.Controllers
         #region Http方法
 
         #region 使用RequestHeaderMatchingMediaType Attribute进行判定执行哪种返回类型的Get方法
+        [AllowAnonymous]
         [HttpGet(Name = "GetPosts")]
         [RequestHeaderMatchingMediaType("Accept", new[] { "application/vnd.smallprogram.hateoas+json" })]
         public async Task<IActionResult> GetPostsHateoas(PostQueryParameters postQueryParameters)
@@ -121,7 +122,7 @@ namespace SmallProgramDemo.Api.Controllers
 
 
         }
-
+        [AllowAnonymous]
         [HttpGet(Name = "GetPosts")]
         [RequestHeaderMatchingMediaType("Accept", new[] { "application/json", "*/*" })]
         public async Task<IActionResult> Get(PostQueryParameters postQueryParameters)
@@ -281,7 +282,7 @@ namespace SmallProgramDemo.Api.Controllers
         }
         #endregion 
 
-
+        [AllowAnonymous]
         [HttpGet("{id}", Name = "GetPost")]
         public async Task<IActionResult> Get(int id, string fields = null)
         {
