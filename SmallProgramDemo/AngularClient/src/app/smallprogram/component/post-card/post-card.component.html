@@ -1,0 +1,24 @@
+<mat-card class="post-card">
+  <mat-card-header class="post-card-header">
+    <div mat-card-avatar>
+      <img class="avatar" [src]="'/avatars/' + post.author + '.jpg'" [alt]="'/avatars/' + post.author + '.jpg'" onerror="if (this.src != '/assets/default-user.png') this.src = '/assets/default-user.png';">
+    </div>
+    <!-- [routerLink]="['/blog/post-detail', post.id]" -->
+    <mat-card-title >
+      <b>{{post.title}}</b>
+    </mat-card-title>
+    <mat-card-subtitle>{{post.updateTime | date: 'medium'}} by {{post.author}}</mat-card-subtitle>
+  </mat-card-header>
+  <!-- <mat-card-content>
+      
+    </mat-card-content> -->
+  <mat-card-actions>
+    <button mat-button>
+      喜欢
+    </button>
+
+    <button mat-button>
+      分享
+    </button>
+  </mat-card-actions>
+</mat-card>

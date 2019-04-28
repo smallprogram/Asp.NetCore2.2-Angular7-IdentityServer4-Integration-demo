@@ -26,8 +26,10 @@
         <mat-icon>input</mat-icon>
       </button>
       <mat-menu #appMenu="matMenu" [overlapTrigger]="false">
-        <button mat-menu-item *ngIf='!openIdConnectService.userAvailable' (click)="openIdConnectService.triggerSignIn()">登录</button>
-        <button mat-menu-item *ngIf='openIdConnectService.userAvailable' (click)="openIdConnectService.triggerSignOut()">登出</button>
+        <button mat-menu-item *ngIf='!openIdConnectService.userAvailable'
+          (click)="openIdConnectService.triggerSignIn()">登录</button>
+        <button mat-menu-item *ngIf='openIdConnectService.userAvailable'
+          (click)="openIdConnectService.triggerSignOut()">登出</button>
       </mat-menu>
 
 
@@ -36,8 +38,9 @@
 
 
     <!-- Add Content Here -->
-    <router-outlet></router-outlet>
-
+    <div class="wrapper">
+      <router-outlet></router-outlet>
+    </div>
 
   </mat-sidenav-content>
 </mat-sidenav-container>

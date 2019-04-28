@@ -3,6 +3,11 @@
 
 @import "~material-design-icons/iconfont/material-icons.css";
 
+@import "./assets/tinyMCE_skins/content/default/content.css";
+@import "./assets/tinyMCE_skins/ui/oxide/content.inline.min.css";
+@import "./assets/tinyMCE_skins/ui/oxide/content.min.css";
+@import "./assets/tinyMCE_skins/ui/oxide/skin.min.css";
+
 body{
  margin: 0;
  height: 100%

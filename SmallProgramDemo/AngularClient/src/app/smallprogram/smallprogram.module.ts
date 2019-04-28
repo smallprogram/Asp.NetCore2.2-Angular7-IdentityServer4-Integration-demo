@@ -10,15 +10,25 @@ import { PostService } from './services/post.service';
 import { PostListComponent } from './component/post-list/post-list.component';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthorizationHeaderInterceptor } from '../shared/oidc/authorization-header-interceptor.interceptor';
+import { PostCardComponent } from './component/post-card/post-card.component';
+import { WritePostComponent } from './component/write-post/write-post.component';
+import { TinymceService } from './services/tinymce.service';
+import { ReactiveFormsModule,FormsModule } from '@angular/forms';
+import { EditorModule } from '@tinymce/tinymce-angular';
+
+
 
 
 @NgModule({
-  declarations: [SmallprogramAppComponent, SidenavComponent, PostListComponent],
+  declarations: [SmallprogramAppComponent, SidenavComponent, PostListComponent, PostCardComponent, WritePostComponent],
   imports: [
     CommonModule,
     MaterialModule,
     HttpClientModule,
-    SmallprogramRoutingModule
+    FormsModule,
+    ReactiveFormsModule,
+    SmallprogramRoutingModule,
+    EditorModule,
   ],
   providers: [
     PostService,
@@ -26,7 +36,8 @@ import { AuthorizationHeaderInterceptor } from '../shared/oidc/authorization-hea
       provide: HTTP_INTERCEPTORS,
       useClass: AuthorizationHeaderInterceptor,
       multi: true
-    }
+    },
+    TinymceService
   ]
 })
 export class SmallprogramModule { }
