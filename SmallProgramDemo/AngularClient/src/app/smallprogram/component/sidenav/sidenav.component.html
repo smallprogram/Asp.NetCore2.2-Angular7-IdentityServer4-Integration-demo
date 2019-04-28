@@ -1,8 +1,7 @@
 <mat-sidenav-container class="sidenav-container">
   <mat-sidenav #drawer class="sidenav" fixedInViewport="true"
-      [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
-      [mode]="(isHandset$ | async) ? 'over' : 'side'"
-      [opened]="!(isHandset$ | async)">
+    [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'" [mode]="(isHandset$ | async) ? 'over' : 'side'"
+    [opened]="!(isHandset$ | async)">
     <mat-toolbar>Menu</mat-toolbar>
     <mat-nav-list>
       <a mat-list-item href="#">Link 1</a>
@@ -12,28 +11,24 @@
   </mat-sidenav>
   <mat-sidenav-content>
     <mat-toolbar color="primary">
-      <button
-        type="button"
-        aria-label="Toggle sidenav"
-        mat-icon-button
-        (click)="drawer.toggle()"
-        
-        >
+      <button type="button" aria-label="Toggle sidenav" mat-icon-button (click)="drawer.toggle()">
         <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
       </button>
       <span>AngularClient</span>
 
       <!-- 左右对齐分隔占位，在此占位之前的靠左，在此占位之后的靠右 -->
       <span style="flex: 1 1 auto"></span>
-
+      <span *ngIf="openIdConnectService.userAvailable">
+        {{openIdConnectService.user.profile.name}}
+      </span>
       <!-- 登录登出按钮 -->
-        <button mat-icon-button [matMenuTriggerFor]="appMenu">
-          <mat-icon>input</mat-icon>
-        </button>
-        <mat-menu #appMenu="matMenu" [overlapTrigger]="false">
-          <button mat-menu-item>登录</button>
-          <button mat-menu-item>登出</button>
-        </mat-menu>
+      <button mat-icon-button [matMenuTriggerFor]="appMenu">
+        <mat-icon>input</mat-icon>
+      </button>
+      <mat-menu #appMenu="matMenu" [overlapTrigger]="false">
+        <button mat-menu-item *ngIf='!openIdConnectService.userAvailable' (click)="openIdConnectService.triggerSignIn()">登录</button>
+        <button mat-menu-item *ngIf='openIdConnectService.userAvailable' (click)="openIdConnectService.triggerSignOut()">登出</button>
+      </mat-menu>
 
 
     </mat-toolbar>

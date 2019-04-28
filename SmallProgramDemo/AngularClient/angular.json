@@ -22,6 +22,9 @@
         },
         "@schematics/angular:class": {
           "spec": false
+        },
+        "@schematics/angular:guard": {
+          "spec": false
         }
       },
       "architect": {

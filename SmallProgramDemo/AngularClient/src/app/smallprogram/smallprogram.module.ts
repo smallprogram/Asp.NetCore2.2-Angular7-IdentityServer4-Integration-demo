@@ -8,7 +8,8 @@ import { SmallprogramAppComponent } from './smallprogram-app.component';
 import { SidenavComponent } from './component/sidenav/sidenav.component';
 import { PostService } from './services/post.service';
 import { PostListComponent } from './component/post-list/post-list.component';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { AuthorizationHeaderInterceptor } from '../shared/oidc/authorization-header-interceptor.interceptor';
 
 
 @NgModule({
@@ -19,8 +20,13 @@ import { HttpClientModule } from '@angular/common/http';
     HttpClientModule,
     SmallprogramRoutingModule
   ],
-  providers:[
-    PostService
+  providers: [
+    PostService,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthorizationHeaderInterceptor,
+      multi: true
+    }
   ]
 })
 export class SmallprogramModule { }

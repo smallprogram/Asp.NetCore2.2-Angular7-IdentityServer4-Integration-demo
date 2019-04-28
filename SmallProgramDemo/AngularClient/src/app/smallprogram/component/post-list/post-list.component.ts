@@ -26,14 +26,13 @@ export class PostListComponent implements OnInit {
   getPosts() {
     this.postService.getPagedPosts(PostParameters).subscribe(response => {
 
-
       this.pageMeta = JSON.parse(response.headers.get('X-Pagination')) as PageMeta;
-      
-
+    
       let result = {...response.body} as ResultWithLinks<Post>;
       
-
       this.posts = result.values;
+      
+      console.log(this.pageMeta);
       console.log(response.body);
       console.log(this.posts);
     })
