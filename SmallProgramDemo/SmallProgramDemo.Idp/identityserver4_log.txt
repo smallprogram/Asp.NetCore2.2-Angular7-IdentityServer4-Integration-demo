@@ -9118,3 +9118,52 @@
 2019-04-29 12:42:39.485 +08:00 [DBG] Scopes in access token: openid profile email RESTApi
 2019-04-29 12:42:39.488 +08:00 [INF] Profile service returned the following claim types: sub name given_name family_name email email_verified website preferred_username
 2019-04-29 12:42:39.489 +08:00 [DBG] End userinfo request
+2019-04-29 12:46:39.532 +08:00 [DBG] Request path /connect/authorize matched to endpoint type Authorize
+2019-04-29 12:46:39.533 +08:00 [DBG] Endpoint enabled: Authorize, successfully created handler: IdentityServer4.Endpoints.AuthorizeEndpoint
+2019-04-29 12:46:39.533 +08:00 [INF] Invoking IdentityServer endpoint: IdentityServer4.Endpoints.AuthorizeEndpoint for /connect/authorize
+2019-04-29 12:46:39.534 +08:00 [DBG] Start authorize request
+2019-04-29 12:46:39.534 +08:00 [DBG] User in authorize request: 5404c547-e638-489f-b60f-d4317f322374
+2019-04-29 12:46:39.534 +08:00 [DBG] Start authorize request protocol validation
+2019-04-29 12:46:39.535 +08:00 [DBG] client configuration validation for client AngularClient succeeded.
+2019-04-29 12:46:39.535 +08:00 [DBG] Calling into custom validator: IdentityServer4.Validation.DefaultCustomAuthorizeRequestValidator
+2019-04-29 12:46:39.536 +08:00 [INF] ValidatedAuthorizeRequest
+{"ClientId":"AngularClient","ClientName":"SPA Client","RedirectUri":"http://localhost:4200/redirect-silentrenew","AllowedRedirectUris":["http://localhost:4200/signin-oidc","http://localhost:4200/redirect-silentrenew"],"SubjectId":"5404c547-e638-489f-b60f-d4317f322374","ResponseType":"id_token token","ResponseMode":"fragment","GrantType":"implicit","RequestedScopes":"openid profile email RESTApi","State":"8b0229d02b0c45c5b90ecc6f7ccd4125","UiLocales":null,"Nonce":"1e24905295aa4eef891330996d423c3b","AuthenticationContextReferenceClasses":null,"DisplayMode":null,"PromptMode":"none","MaxAge":null,"LoginHint":null,"SessionId":"d5cc213a8bcc6abee0bf0b4b69237e56","Raw":{"client_id":"AngularClient","redirect_uri":"http://localhost:4200/redirect-silentrenew","response_type":"id_token token","scope":"openid profile email RESTApi","state":"8b0229d02b0c45c5b90ecc6f7ccd4125","nonce":"1e24905295aa4eef891330996d423c3b","prompt":"none","id_token_hint":"***REDACTED***"},"$type":"AuthorizeRequestValidationLog"}
+2019-04-29 12:46:39.557 +08:00 [DBG] Client is configured to not require consent, no consent is required
+2019-04-29 12:46:39.558 +08:00 [DBG] Creating Implicit Flow response.
+2019-04-29 12:46:39.558 +08:00 [DBG] Getting claims for access token for client: AngularClient
+2019-04-29 12:46:39.558 +08:00 [DBG] Getting claims for access token for subject: 5404c547-e638-489f-b60f-d4317f322374
+2019-04-29 12:46:39.569 +08:00 [DBG] Getting claims for identity token for subject: 5404c547-e638-489f-b60f-d4317f322374 and client: AngularClient
+2019-04-29 12:46:39.569 +08:00 [DBG] In addition to an id_token, an access_token was requested. No claims other than sub are included in the id_token. To obtain more user claims, either use the user info endpoint or set AlwaysIncludeUserClaimsInIdToken on the client configuration.
+2019-04-29 12:46:39.573 +08:00 [INF] {"ClientId":"AngularClient","ClientName":"SPA Client","RedirectUri":"http://localhost:4200/redirect-silentrenew","Endpoint":"Authorize","SubjectId":"5404c547-e638-489f-b60f-d4317f322374","Scopes":"openid profile email RESTApi","GrantType":"implicit","Tokens":[{"TokenType":"id_token","TokenValue":"****YF3g","$type":"Token"},{"TokenType":"access_token","TokenValue":"****6wNQ","$type":"Token"}],"Category":"Token","Name":"Token Issued Success","EventType":"Success","Id":2000,"Message":null,"ActivityId":"0HLMC8OR3NBKU:0000001F","TimeStamp":"2019-04-29T04:46:39.0000000Z","ProcessId":11632,"LocalIpAddress":"::1:5001","RemoteIpAddress":"::1","$type":"TokenIssuedSuccessEvent"}
+2019-04-29 12:46:39.576 +08:00 [INF] Authorize endpoint response
+{"SubjectId":"5404c547-e638-489f-b60f-d4317f322374","ClientId":"AngularClient","RedirectUri":"http://localhost:4200/redirect-silentrenew","State":"8b0229d02b0c45c5b90ecc6f7ccd4125","Scope":"openid profile email RESTApi","Error":null,"ErrorDescription":null,"$type":"AuthorizeResponseLog"}
+2019-04-29 12:46:40.254 +08:00 [DBG] CORS request made for path: /.well-known/openid-configuration from origin: http://localhost:4200
+2019-04-29 12:46:40.255 +08:00 [DBG] Client list checked and origin: http://localhost:4200 is allowed
+2019-04-29 12:46:40.256 +08:00 [DBG] CorsPolicyService allowed origin: http://localhost:4200
+2019-04-29 12:46:40.256 +08:00 [DBG] Request path /.well-known/openid-configuration matched to endpoint type Discovery
+2019-04-29 12:46:40.257 +08:00 [DBG] Endpoint enabled: Discovery, successfully created handler: IdentityServer4.Endpoints.DiscoveryEndpoint
+2019-04-29 12:46:40.260 +08:00 [INF] Invoking IdentityServer endpoint: IdentityServer4.Endpoints.DiscoveryEndpoint for /.well-known/openid-configuration
+2019-04-29 12:46:40.271 +08:00 [DBG] Start discovery request
+2019-04-29 12:46:40.272 +08:00 [DBG] CORS request made for path: /connect/userinfo from origin: http://localhost:4200
+2019-04-29 12:46:40.273 +08:00 [DBG] Client list checked and origin: http://localhost:4200 is allowed
+2019-04-29 12:46:40.274 +08:00 [DBG] CorsPolicyService allowed origin: http://localhost:4200
+2019-04-29 12:46:40.281 +08:00 [DBG] CORS request made for path: /connect/userinfo from origin: http://localhost:4200
+2019-04-29 12:46:40.281 +08:00 [DBG] Client list checked and origin: http://localhost:4200 is allowed
+2019-04-29 12:46:40.282 +08:00 [DBG] CorsPolicyService allowed origin: http://localhost:4200
+2019-04-29 12:46:40.283 +08:00 [DBG] Request path /connect/userinfo matched to endpoint type Userinfo
+2019-04-29 12:46:40.283 +08:00 [DBG] Endpoint enabled: Userinfo, successfully created handler: IdentityServer4.Endpoints.UserInfoEndpoint
+2019-04-29 12:46:40.284 +08:00 [INF] Invoking IdentityServer endpoint: IdentityServer4.Endpoints.UserInfoEndpoint for /connect/userinfo
+2019-04-29 12:46:40.284 +08:00 [DBG] Start userinfo request
+2019-04-29 12:46:40.285 +08:00 [DBG] Bearer token found in header
+2019-04-29 12:46:40.287 +08:00 [DBG] client configuration validation for client AngularClient succeeded.
+2019-04-29 12:46:40.287 +08:00 [DBG] client configuration validation for client AngularClient succeeded.
+2019-04-29 12:46:40.290 +08:00 [DBG] Calling into custom token validator: IdentityServer4.Validation.DefaultCustomTokenValidator
+2019-04-29 12:46:40.291 +08:00 [DBG] Token validation success
+{"ClientId":null,"ClientName":null,"ValidateLifetime":true,"AccessTokenType":"Jwt","ExpectedScope":"openid","TokenHandle":null,"JwtId":null,"Claims":{"nbf":1556513199,"exp":1556513499,"iss":"https://localhost:5001","aud":["https://localhost:5001/resources","RESTApi"],"client_id":"AngularClient","sub":"5404c547-e638-489f-b60f-d4317f322374","auth_time":1556503139,"idp":"local","scope":["openid","profile","email","RESTApi"],"amr":"pwd"},"$type":"TokenValidationLog"}
+2019-04-29 12:46:40.294 +08:00 [DBG] Creating userinfo response
+2019-04-29 12:46:40.294 +08:00 [DBG] Scopes in access token: openid profile email RESTApi
+2019-04-29 12:46:40.294 +08:00 [DBG] Scopes in access token: openid profile email RESTApi
+2019-04-29 12:46:40.295 +08:00 [DBG] Requested claim types: sub name family_name given_name middle_name nickname preferred_username profile picture website gender birthdate zoneinfo locale updated_at email email_verified
+2019-04-29 12:46:40.295 +08:00 [DBG] Scopes in access token: openid profile email RESTApi
+2019-04-29 12:46:40.298 +08:00 [INF] Profile service returned the following claim types: sub name given_name family_name email email_verified website preferred_username
+2019-04-29 12:46:40.299 +08:00 [DBG] End userinfo request
