@@ -3,7 +3,9 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const idpBase = 'https://localhost:5001';
+export const apiResourceUrl = 'https://localhost:6001'
 export const angularBase = 'http://localhost:4200';
+
 
 export const environment = {
   production: false,

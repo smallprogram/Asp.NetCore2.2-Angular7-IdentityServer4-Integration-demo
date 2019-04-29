@@ -28,7 +28,7 @@ export class PostService extends BaseService {
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/vnd.smallprogram.post.create+json',
-        'Accetp': 'application/vnd.smallprogram.hateoas+json'
+        'Accept': 'application/vnd.smallprogram.hateoas+json'
       })
     }
     return this.http.post<Post>(`${this.apiUslBase}/posts`, post, httpOptions);

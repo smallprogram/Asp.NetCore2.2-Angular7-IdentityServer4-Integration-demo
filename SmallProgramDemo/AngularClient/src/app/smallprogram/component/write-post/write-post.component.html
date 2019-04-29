@@ -1,29 +1,30 @@
 <div>
-    <!-- <form class="post-editor-form" [formGroup]="postFrom" (ngSubmit)="submit()">
+    <form class="post-editor-form" [formGroup]="postForm" (ngSubmit)="submit()">
       <mat-form-field class="post-editor-title">
-        <input matInput placeholder="Title" formControlName="title">
-        <mat-error *ngIf="postForm.controls.title.dirty && postForm.controls.title.errors?.required">
-          Please fill in the title.
+        <input matInput placeholder="标题" formControlName="title">
+        <mat-error *ngIf="!!postForm.controls.title.dirty && !!postForm.controls.title.errors?.required">
+          请输入标题
         </mat-error>
-        <mat-error *ngIf="postForm.controls.title.dirty && postForm.controls.title.errors?.minlength">
-          The minimum length of title is 20 characters.
+        <mat-error *ngIf="!!postForm.controls.title.dirty && !!postForm.controls.title.errors?.minlength">
+          最少不能少于10个字符
         </mat-error>
-        <mat-error *ngIf="postForm.controls.title.dirty && postForm.controls.title.errors?.maxlength">
-          The maximum length of title is 100 characters.
+        <mat-error *ngIf="!!postForm.controls.title.dirty && !!postForm.controls.title.errors?.maxlength">
+          最大不能超过100个字符
         </mat-error>
-      </mat-form-field>     -->
+      </mat-form-field>    
 
       <!-- formControlName="body" -->
 
-      <editor [init]="editorSettings" ></editor>
-      <!-- <section *ngIf="postForm.controls.body.dirty" class="body-error">
-        <p class="mat-caption" *ngIf="postForm.controls.body.errors?.required">
-          Please fill in the body.
+      <editor [init]="editorSettings" formControlName="body"></editor>
+      
+      <section *ngIf="!!postForm.controls.body.dirty" class="ng-dirty">
+        <p class="mat-error" *ngIf="!!postForm.controls.body.errors?.required">
+          请输入正文内容，正文内容不能为空
         </p>
-        <p class="mat-caption" *ngIf="postForm.controls.body.errors?.minlength">
-          The minimum length of body is 100 characters.
+        <p class="mat-error" *ngIf="!!postForm.controls.body.errors?.minlength">
+          正文内容不能少于100个字符
         </p>
       </section>
       <button type="submit" mat-raised-button color="primary" class="submit-button" [disabled]="!postForm.valid">Save</button>
-    </form> -->
+    </form>
   </div>

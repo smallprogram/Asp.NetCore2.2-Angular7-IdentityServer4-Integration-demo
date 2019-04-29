@@ -16,7 +16,7 @@ export class TinymceService {
       branding: false,
 
       height: 500,
-      menubar: false,
+      menubar: true,
       // tslint:disable-next-line:max-line-length
       plugins: 'textcolor colorpicker advlist autolink link lists charmap code print preview fullscreen paste image imagetools',
       // tslint:disable-next-line:max-line-length
