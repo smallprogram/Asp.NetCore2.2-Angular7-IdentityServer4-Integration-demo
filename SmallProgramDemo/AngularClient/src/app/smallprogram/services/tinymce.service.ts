@@ -10,6 +10,11 @@ export class TinymceService {
 
   getSettings() {
     return {
+      language:'zh_CN',
+      skin_url: '/assets/tinymce/skins/ui/oxide',
+      content_css: 'assets/tinymce/skins/ui/oxide/content.min.css',
+      branding: false,
+
       height: 500,
       menubar: false,
       // tslint:disable-next-line:max-line-length

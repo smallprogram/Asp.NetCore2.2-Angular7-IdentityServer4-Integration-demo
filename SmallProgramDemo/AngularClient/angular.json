@@ -41,27 +41,29 @@
               "src/assets"
             ],
             "styles": [
+
               "src/styles.scss"
+
             ],
             "scripts": [
-              "./node_modules/tinymce/tinymce.js",
-              "./node_modules/tinymce/themes/silver/theme.js",
-              "./node_modules/tinymce/plugins/link/plugin.js",
-              "./node_modules/tinymce/plugins/paste/plugin.js",
-              "./node_modules/tinymce/plugins/table/plugin.js",
-              "./node_modules/tinymce/plugins/image/plugin.js",
-              "./node_modules/tinymce/plugins/imagetools/plugin.js",
-              "./node_modules/tinymce/plugins/textcolor/plugin.js",
-              "./node_modules/tinymce/plugins/colorpicker/plugin.js",
-              "./node_modules/tinymce/plugins/advlist/plugin.js",
-              "./node_modules/tinymce/plugins/autolink/plugin.js",
-              "./node_modules/tinymce/plugins/lists/plugin.js",
-              "./node_modules/tinymce/plugins/charmap/plugin.js",
-              "./node_modules/tinymce/plugins/code/plugin.js",
-              "./node_modules/tinymce/plugins/print/plugin.js",
-              "./node_modules/tinymce/plugins/preview/plugin.js",
-              "./node_modules/tinymce/plugins/fullscreen/plugin.js",
-              "./src/assets/tinyMCE_zh_CN.js"
+              "node_modules/tinymce/tinymce.min.js",
+              "node_modules/tinymce/themes/silver/theme.js",
+              "node_modules/tinymce/plugins/link/plugin.js",
+              "node_modules/tinymce/plugins/paste/plugin.js",
+              "node_modules/tinymce/plugins/table/plugin.js",
+              "node_modules/tinymce/plugins/image/plugin.js",
+              "node_modules/tinymce/plugins/imagetools/plugin.js",
+              "node_modules/tinymce/plugins/textcolor/plugin.js",
+              "node_modules/tinymce/plugins/colorpicker/plugin.js",
+              "node_modules/tinymce/plugins/advlist/plugin.js",
+              "node_modules/tinymce/plugins/autolink/plugin.js",
+              "node_modules/tinymce/plugins/lists/plugin.js",
+              "node_modules/tinymce/plugins/charmap/plugin.js",
+              "node_modules/tinymce/plugins/code/plugin.js",
+              "node_modules/tinymce/plugins/print/plugin.js",
+              "node_modules/tinymce/plugins/preview/plugin.js",
+              "node_modules/tinymce/plugins/fullscreen/plugin.js",
+              "src/assets/tinyMCE_zh_CN.js"
             ],
             "es5BrowserSupport": true
           },
