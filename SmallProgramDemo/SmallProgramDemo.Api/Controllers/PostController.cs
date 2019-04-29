@@ -124,7 +124,7 @@ namespace SmallProgramDemo.Api.Controllers
         }
         [AllowAnonymous]
         [HttpGet(Name = "GetPosts")]
-        [RequestHeaderMatchingMediaType("Accept", new[] { "application/json", "*/*" })]
+        [RequestHeaderMatchingMediaType("Accept", new[] { "application/json"})]
         public async Task<IActionResult> Get(PostQueryParameters postQueryParameters)
         {
             #region 参数合法性判断
@@ -319,6 +319,7 @@ namespace SmallProgramDemo.Api.Controllers
 
             return Ok(result);
         }
+
 
         [HttpPost(Name = "CreatePost")]
         //由于传入的参数数据postResource的一个变种，数据一种独特的媒体类型，应该传入特定格式的媒体类型数据，需要在Strartup中注册该媒体类型
