@@ -19,5 +19,6 @@ namespace SmallProgramDemo.Infrastructure.Database
         }
 
         public DbSet<Post> Posts { set; get; }
+        public DbSet<PostImage> PostImages { set; get; }
     }
 }

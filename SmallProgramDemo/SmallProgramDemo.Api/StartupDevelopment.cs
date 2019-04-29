@@ -98,6 +98,7 @@ namespace SmallProgramDemo.Api
 
             //注册Respository
             services.AddScoped<IPostRepository, PostRepository>();
+            services.AddScoped<IPostImageRepository, PostImageRepository>();
             //注册UnitOfWork
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 
@@ -107,6 +108,7 @@ namespace SmallProgramDemo.Api
             //注册FluentValidat验证器
             services.AddTransient<IValidator<PostAddResource>, PostAddOrUpdateResourceValidator<PostAddResource>>();
             services.AddTransient<IValidator<PostUpdateResource>, PostAddOrUpdateResourceValidator<PostUpdateResource>>();
+            services.AddTransient<IValidator<PostImageResource>, PostImageResourceValidator>();
 
             //注册配置URI Helper
             services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();  //单例的ActionContextAccessor依赖注入
@@ -178,6 +180,8 @@ namespace SmallProgramDemo.Api
             
             //https重定向
             app.UseHttpsRedirection();
+
+            app.UseStaticFiles();
 
             app.UseAuthentication();
 
