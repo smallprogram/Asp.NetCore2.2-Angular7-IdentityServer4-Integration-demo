@@ -27,4 +27,4 @@ For development details, please refer to the Markdown file under the SmallProgra
 - 如果你选择使用Angular作为客户端，请使用CMD命令行窗口或PowerShell中，将当前路径设置到项目中AngularClient文件夹下，执行`npm install`命令，还原客户端相关包。还原成功之后，在AngularClient目录下执行`ng serve -o`命令，即可运行Angular客户端，并查看项目效果。
 
 ## 一些记录
-前端还未实现当个POST查看、修改功能，未来有时间将会继续完善这个Demo.
+前端还未实现单实例查看、修改功能，未来有时间将会继续完善这个Demo.
