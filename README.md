@@ -1,8 +1,4 @@
-<img src="https://img.shields.io/badge/Visual%20Studio-2019-green.svg">
-<img src="https://img.shields.io/badge/Asp.Net%20Core-2.2-blue.svg">
-<img src="https://img.shields.io/badge/IdentityServer4-2.4.0-red.svg">
-<img src="https://img.shields.io/badge/Angular-7.2.0-blue.svg">
-<img src="https://img.shields.io/badge/Node-10.15.0-lightgrey.svg">
+<img src="https://img.shields.io/badge/Visual%20Studio-2019-green.svg"> <img src="https://img.shields.io/badge/Asp.Net%20Core-2.2-blue.svg"> <img src="https://img.shields.io/badge/IdentityServer4-2.4.0-red.svg"> <img src="https://img.shields.io/badge/Angular-7.2.0-blue.svg"> <img src="https://img.shields.io/badge/Node-10.15.0-lightgrey.svg">
 
 # Asp.NetCore2.2-Angular7-IdentityServer4-Integration-demo
 ## 持续更新中......（Continuous update...）
