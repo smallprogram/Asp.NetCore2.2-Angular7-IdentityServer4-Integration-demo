@@ -2,7 +2,7 @@ const PROXY_CONFIG = [
     {
         context: [
             "/api",
-            "/uploads",
+            "/uploads"
             // "/endpoints",
             // "/i",
             // "/need",
