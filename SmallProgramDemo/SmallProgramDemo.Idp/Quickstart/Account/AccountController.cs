@@ -209,12 +209,15 @@ namespace IdentityServer4.Quickstart.UI
         /*****************************************/
         private async Task<LoginViewModel> BuildLoginViewModelAsync(string returnUrl)
         {
+            //获取AuthorizationURI中得参数保存至AuthorizationRequest实体上
             var context = await _interaction.GetAuthorizationContextAsync(returnUrl);
+            //如果AuthorizationRequest包好IDP信息，则为外部IDP，如果没有，则为本地IDP
             if (context?.IdP != null)
             {
-                // this is meant to short circuit the UI and only trigger the one external IdP
+                // 触发一个外部IdP
                 return new LoginViewModel
                 {
+                    //设置Login不使用本地IDP
                     EnableLocalLogin = false,
                     ReturnUrl = returnUrl,
                     Username = context?.LoginHint,
@@ -222,8 +225,10 @@ namespace IdentityServer4.Quickstart.UI
                 };
             }
 
+            //获取所有认证方案
             var schemes = await _schemeProvider.GetAllSchemesAsync();
 
+            //获取外部认证方案
             var providers = schemes
                 .Where(x => x.DisplayName != null ||
                             (x.Name.Equals(AccountOptions.WindowsAuthenticationSchemeName, StringComparison.OrdinalIgnoreCase))
@@ -235,8 +240,12 @@ namespace IdentityServer4.Quickstart.UI
                 }).ToList();
 
             var allowLocal = true;
+
+
+
             if (context?.ClientId != null)
             {
+                //通过Request的ClientId从IDP中检索目前启用状态的Client配置，并返回Client实例
                 var client = await _clientStore.FindEnabledClientByIdAsync(context.ClientId);
                 if (client != null)
                 {
