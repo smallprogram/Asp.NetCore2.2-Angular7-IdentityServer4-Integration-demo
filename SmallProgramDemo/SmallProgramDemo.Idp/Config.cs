@@ -77,7 +77,7 @@ namespace SmallProgramDemo.Idp
 
                     AllowedGrantTypes = GrantTypes.Implicit,
                     AllowAccessTokensViaBrowser = true,
-                    RequireConsent = false, //是否需要用户点击同意
+                    RequireConsent = true, //是否需要用户点击同意
                     AccessTokenLifetime = 60 *5, //AccessToken过期时间 单位是秒
 
                     RedirectUris =

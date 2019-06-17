@@ -73,23 +73,24 @@ namespace IdentityServer4.Quickstart.UI
         public async Task<IActionResult> Login(LoginInputModel model, string button)
         {
             // check if we are in the context of an authorization request
+            // 获取AuthorizationURI中得参数保存至AuthorizationRequest实体上
             var context = await _interaction.GetAuthorizationContextAsync(model.ReturnUrl);
 
-            // the user clicked the "cancel" button
+            // 用户点击了取消按钮
             if (button != "login")
             {
                 if (context != null)
                 {
-                    // if the user cancels, send a result back into IdentityServer as if they 
-                    // denied the consent (even if this client does not require consent).
-                    // this will send back an access denied OIDC error response to the client.
+                    //如果用户取消，则将结果发送回IdentityServer，就像它们一样
+                    //拒绝同意（即使此客户不需要同意）。
+                    //这将向客户端发回拒绝访问的OIDC错误响应。
                     await _interaction.GrantConsentAsync(context, ConsentResponse.Denied);
 
-                    // we can trust model.ReturnUrl since GetAuthorizationContextAsync returned non-null
+                    // 我们可以信任model.ReturnUrl，因为GetAuthorizationContextAsync返回非null
                     if (await _clientStore.IsPkceClientAsync(context.ClientId))
                     {
-                        // if the client is PKCE then we assume it's native, so this change in how to
-                        // return the response is for better UX for the end user.
+                        //如果客户端是PKCE，那么我们假设它是原生的，所以这个改变如何
+                        //返回响应是为了为最终用户提供更好的用户体验。
                         return View("Redirect", new RedirectViewModel { RedirectUrl = model.ReturnUrl });
                     }
 
@@ -97,17 +98,20 @@ namespace IdentityServer4.Quickstart.UI
                 }
                 else
                 {
-                    // since we don't have a valid context, then we just go back to the home page
+                    // 因为我们没有有效的上下文，所以我们只需返回主页
                     return Redirect("~/");
                 }
             }
-
+            // 用户点击了登录按钮，并且试图模型没有错误
             if (ModelState.IsValid)
             {
                 var result = await _signInManager.PasswordSignInAsync(model.Username, model.Password, model.RememberLogin, lockoutOnFailure: true);
                 if (result.Succeeded)
                 {
                     var user = await _userManager.FindByNameAsync(model.Username);
+
+                    // 引发指定的事件。
+                    // 参数事件实例，这里是登录成功事件
                     await _events.RaiseAsync(new UserLoginSuccessEvent(user.UserName, user.Id, user.UserName));
 
                     if (context != null)
@@ -139,11 +143,12 @@ namespace IdentityServer4.Quickstart.UI
                     }
                 }
 
+                //用户输入的信息错误
                 await _events.RaiseAsync(new UserLoginFailureEvent(model.Username, "invalid credentials"));
                 ModelState.AddModelError(string.Empty, AccountOptions.InvalidCredentialsErrorMessage);
             }
 
-            // something went wrong, show form with error
+            // 出了点问题，显示有错误的表格
             var vm = await BuildLoginViewModelAsync(model);
             return View(vm);
         }
@@ -160,8 +165,8 @@ namespace IdentityServer4.Quickstart.UI
 
             if (vm.ShowLogoutPrompt == false)
             {
-                // if the request for logout was properly authenticated from IdentityServer, then
-                // we don't need to show the prompt and can just log the user out directly.
+                //如果从IdentityServer正确验证了注销请求，那么
+                //我们不需要显示提示，只需直接将用户注销即可。
                 return await Logout(vm);
             }
 
@@ -180,22 +185,22 @@ namespace IdentityServer4.Quickstart.UI
 
             if (User?.Identity.IsAuthenticated == true)
             {
-                // delete local authentication cookie
+                // 删除本地验证cookie
                 await _signInManager.SignOutAsync();
 
-                // raise the logout event
+                // 出发注销事件
                 await _events.RaiseAsync(new UserLogoutSuccessEvent(User.GetSubjectId(), User.GetDisplayName()));
             }
 
-            // check if we need to trigger sign-out at an upstream identity provider
+            // 检查我们是否需要在上游身份提供商处触发注销
             if (vm.TriggerExternalSignout)
             {
-                // build a return URL so the upstream provider will redirect back
-                // to us after the user has logged out. this allows us to then
-                // complete our single sign-out processing.
+                //构建一个返回URL，以便上游提供者重定向回来
+                //在用户退出后向我们发送消息。 这让我们接受了
+                //完成我们的单点登出处理。
                 string url = Url.Action("Logout", new { logoutId = vm.LogoutId });
 
-                // this triggers a redirect to the external provider for sign-out
+                // 这会触发重定向到外部提供程序以进行注销
                 return SignOut(new AuthenticationProperties { RedirectUri = url }, vm.ExternalAuthenticationScheme);
             }
 
@@ -228,7 +233,7 @@ namespace IdentityServer4.Quickstart.UI
             //获取所有认证方案
             var schemes = await _schemeProvider.GetAllSchemesAsync();
 
-            //获取外部认证方案
+            //获取所有外部idp
             var providers = schemes
                 .Where(x => x.DisplayName != null ||
                             (x.Name.Equals(AccountOptions.WindowsAuthenticationSchemeName, StringComparison.OrdinalIgnoreCase))
@@ -239,18 +244,21 @@ namespace IdentityServer4.Quickstart.UI
                     AuthenticationScheme = x.Name
                 }).ToList();
 
+            //允许本地认证
             var allowLocal = true;
 
 
-
+            
             if (context?.ClientId != null)
             {
                 //通过Request的ClientId从IDP中检索目前启用状态的Client配置，并返回Client实例
                 var client = await _clientStore.FindEnabledClientByIdAsync(context.ClientId);
                 if (client != null)
                 {
+                    //获取该客户端是否允许本地登录
                     allowLocal = client.EnableLocalLogin;
 
+                    //判断，是否配置了可以与客户端一起使用的外部Idp，如果为IdentityProviderRestrictions为空，则允许所有idp，该值默认为null
                     if (client.IdentityProviderRestrictions != null && client.IdentityProviderRestrictions.Any())
                     {
                         providers = providers.Where(provider => client.IdentityProviderRestrictions.Contains(provider.AuthenticationScheme)).ToList();
@@ -282,21 +290,22 @@ namespace IdentityServer4.Quickstart.UI
 
             if (User?.Identity.IsAuthenticated != true)
             {
-                // if the user is not authenticated, then just show logged out page
+                // 如果用户未经过身份验证，则只显示已注销的页面
                 vm.ShowLogoutPrompt = false;
                 return vm;
             }
 
+            // 根据LogoutId获取保存至LogoutRequest实体上
             var context = await _interaction.GetLogoutContextAsync(logoutId);
             if (context?.ShowSignoutPrompt == false)
             {
-                // it's safe to automatically sign-out
+                // 安全的自动注销
                 vm.ShowLogoutPrompt = false;
                 return vm;
             }
 
-            // show the logout prompt. this prevents attacks where the user
-            // is automatically signed out by another malicious web page.
+            // 显示注销提示。 这可以防止用户攻击
+            // 防止由另一个恶意网页自动注销。
             return vm;
         }
 
@@ -317,16 +326,18 @@ namespace IdentityServer4.Quickstart.UI
             if (User?.Identity.IsAuthenticated == true)
             {
                 var idp = User.FindFirst(JwtClaimTypes.IdentityProvider)?.Value;
+                
                 if (idp != null && idp != IdentityServer4.IdentityServerConstants.LocalIdentityProvider)
                 {
+                    //使用外部idp注销
                     var providerSupportsSignout = await HttpContext.GetSchemeSupportsSignOutAsync(idp);
                     if (providerSupportsSignout)
                     {
                         if (vm.LogoutId == null)
                         {
-                            // if there's no current logout context, we need to create one
-                            // this captures necessary info from the current logged in user
-                            // before we signout and redirect away to the external IdP for signout
+                            //如果没有当前的注销上下文，我们需要创建一个
+                            //这会捕获当前登录用户的必要信息
+                            //在我们退出并重定向到外部IdP以进行注销之前
                             vm.LogoutId = await _interaction.CreateLogoutContextAsync();
                         }
 

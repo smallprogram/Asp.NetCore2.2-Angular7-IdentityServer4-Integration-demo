@@ -43,7 +43,7 @@ namespace Host.Quickstart.Account
         }
 
         /// <summary>
-        /// initiate roundtrip to external authentication provider
+        /// 启动到外部身份验证提供程序的往返
         /// </summary>
         [HttpGet]
         public async Task<IActionResult> Challenge(string provider, string returnUrl)
