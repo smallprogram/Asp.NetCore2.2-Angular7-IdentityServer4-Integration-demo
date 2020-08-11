@@ -27,7 +27,7 @@
     "material-design-icons": "^3.0.1",
     "oidc-client": "^1.7.1",
     "rxjs": "~6.3.3",
-    "tinymce": "^5.1.4",
+    "tinymce": "^5.4.0",
     "tslib": "^1.9.0",
     "zone.js": "~0.8.26"
   },
